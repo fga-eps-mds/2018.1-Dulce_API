@@ -33,3 +33,20 @@ app.get("/api/:id", function(req, res){
     });
     
 });
+
+app.put("/api/put/:id", function(req, res) {
+    
+    Model.findByIdAndUpdate(req.params.id, req.body ,function(err, post) {
+
+        'nome' = req.body.nome,
+        'matricula' = req.body.matricula
+        'setor' = req.body.setor,
+        'senha' = req.body.senha,
+        'hospital' = req.body.hospital
+
+        if (err) return next(err);
+        res.json(post); 
+        res.json({ message: 'Atualizado !!' }); 
+
+    });    
+ });
