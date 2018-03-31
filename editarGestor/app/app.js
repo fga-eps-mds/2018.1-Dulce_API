@@ -51,4 +51,9 @@ app.put("/api/put/:id", function(req, res) {
     });    
  });
 
+ 
+app.listen(8080, function() {
+	console.log('Funcionando');
+});
+
  //Finalizando API para atualizar
