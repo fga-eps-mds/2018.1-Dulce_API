@@ -21,3 +21,28 @@ var taskListSchema = mongo.Schema({
 });
 
 var Model = mongo.model('Tasks', taskListSchema);
+
+//Cria usuario gestor
+
+app.post("/api/add", function(req,res){
+
+  var criar = new Model({
+    'nome' : req.body.nome,
+    'matricula' : req.body.nome,
+    'setor' : req.body.nome,
+    'senha' : req.body.nome,
+    'hospital' : req.body.nome
+  });
+
+  criar.save(function(err){
+
+    if(err){
+      console.log(err);
+      res.send(err);
+      res.end();
+    }
+  });
+
+  res.send(criar);
+  res.end();
+});
