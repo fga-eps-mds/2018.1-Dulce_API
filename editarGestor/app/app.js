@@ -19,3 +19,4 @@ var taskListSchema = mongo.Schema({
     senha = { type : String},
     hospital = { type: String },
 });
+
