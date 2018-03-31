@@ -46,3 +46,7 @@ app.post("/api/add", function(req,res){
   res.send(criar);
   res.end();
 });
+
+app.listen(8080, function(){
+  console.log(Rodando);
+})
