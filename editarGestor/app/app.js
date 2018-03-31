@@ -22,20 +22,24 @@ var taskListSchema = mongo.Schema({
 
 var Model = mongo.model('Tasks', taskListSchema);
 
+//Visualizar gestor
+
 app.get("/api/:id", function(req, res){
     Model.find(req.params.id, req.body, function (err, post){
-        
+
         if (err) {
 			res.json(err);
 		} else {
 			res.json(post);
 		}
     });
-    
+
 });
 
+//Atualizar atualizar
+
 app.put("/api/put/:id", function(req, res) {
-    
+
     Model.findByIdAndUpdate(req.params.id, req.body ,function(err, post) {
 
         'nome' = req.body.nome,
@@ -45,13 +49,13 @@ app.put("/api/put/:id", function(req, res) {
         'hospital' = req.body.hospital
 
         if (err) return next(err);
-        res.json(post); 
-        res.json({ message: 'Atualizado !!' }); 
+        res.json(post);
+        res.json({ message: 'Atualizado !!' });
 
-    });    
+    });
  });
 
- 
+
 app.listen(8080, function() {
 	console.log('Funcionando');
 });
