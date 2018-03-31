@@ -20,3 +20,16 @@ var taskListSchema = mongo.Schema({
     hospital = { type: String },
 });
 
+var Model = mongo.model('Tasks', taskListSchema);
+
+app.get("/api/:id", function(req, res){
+    Model.find(req.params.id, req.body, function (err, post){
+        
+        if (err) {
+			res.json(err);
+		} else {
+			res.json(post);
+		}
+    });
+    
+});
