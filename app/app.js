@@ -7,3 +7,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+var mongoaddr = 'mongodb://' + process.env.MONGO_PORT_27017_TCP_ADDR + ':27017/testeapi';
+console.log(mongoaddr);
+mongo.connect(mongoaddr);
+
+var taskListSchema = mongo.Schema({
+	nome : { type: String },
+	matricula : { type: String },
+  setor : { type: String },
+  senha : { type: String },
+  hospital : { type: String },
+});
+
+var Model = mongo.model('Tasks', taskListSchema);
