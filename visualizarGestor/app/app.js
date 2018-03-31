@@ -8,16 +8,18 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-//Conexão com o MongoDB
+
 var mongoaddr = 'mongodb://' + process.env.MONGO_PORT_27017_TCP_ADDR + ':27017/testeapi';
 console.log(mongoaddr);
 mongo.connect(mongoaddr);
 
-//Esquema da collection do Mongo
+
 var taskListSchema = mongo.Schema({
-	descricao : { type: String },
-	concluido : Boolean,
-	updated_at: { type: Date, default: Date.now },
+	nome : { type: String },
+	matricula : { type: String },
+  setor : { type: String },
+  senha : { type: String },
+  hospital : { type: String },
 });
 
 //Model da aplicação
