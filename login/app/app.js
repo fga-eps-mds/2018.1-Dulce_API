@@ -3,8 +3,7 @@ var mongo = require('mongoose');
 var bodyParser = require('body-parser');
 var app = express();
 var morgan = require('morgan');
-var mongoose = require('require');
-var config = require('./config');
+var mongoose = require('mongoose');
 var User = require('./users');
 var jwt = require('jsonwebtoken');
 
@@ -13,15 +12,6 @@ console.log(mongoaddr);
 mongo.connect(mongoaddr);
 
 
-app.get("/api/get/:id", function (req, res) {
-  User.find(function(err, post) {
-		if (err) {
-			res.json(err);
-		} else {
-			res.json(todos);
-		}
-	})
-});
 
 app.post("/api/add", function (req, res) {
 
