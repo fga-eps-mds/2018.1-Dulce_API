@@ -13,9 +13,6 @@ console.log(mongoaddr);
 mongo.connect(mongoaddr);
 
 
-
-
-
 app.get("/api/get/:id", function (req, res) {
   User.find(function(err, post) {
 		if (err) {
@@ -26,27 +23,25 @@ app.get("/api/get/:id", function (req, res) {
 	})
 });
 
-app.post("/api/add", function(req,res){
+app.post("/api/add", function (req, res) {
 
-  var criar = new User({
-    'nome' : req.body.nome,
-    'matricula' : req.body.nome,
-    'setor' : req.body.nome,
-    'senha' : req.body.nome,
-    'hospital' : req.body.nome
-  });
+	var register = new User({
+		'name' : req.body.name,
+		'password' : req.body.password,
+		'manager' : req.body.hospital
+	});
 
-  criar.save(function(err){
+	register.save(function (err) {
 
-    if(err){
-      console.log(err);
-      res.send(err);
-      res.end();
-    }
-  });
+		if (err) {
+			console.log(err);
+			res.send(err);
+			res.end();
+		}
 
-  res.send(criar);
-  res.end();
+	});
+	res.send(register);
+	res.end();
 });
 
 
