@@ -1,4 +1,4 @@
-FROM node:latest  
+FROM node:latest
 
 RUN mkdir -p /usr/src/app
 RUN npm install nodemon -g
