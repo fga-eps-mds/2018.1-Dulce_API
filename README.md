@@ -21,7 +21,7 @@ Observe que há um arquivo Dockerfile neste diretório. Agora basta digitar o se
 `$ sudo docker-compose up --build`
 
 Observe a execução, e quando surgir no terminal a seguinte expreção: _Funcionou_ , acesse no seu navegador a porta 8080 
-do servidor local por meio do link [localhost:8080](localhost:8080)
+do servidor local por meio do link [localhost:8080](http://localhost:8080)
 
 ## Postman
 
