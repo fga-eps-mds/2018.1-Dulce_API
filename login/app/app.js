@@ -52,12 +52,15 @@ app.post('/authenticate',function(req,res){
       } else if (!user) {
         var err = new Error('Usuario nao enco');
         err.status = 401;
+        req.session.userId = null;
         return console.log("Erro!")
       }
       bcrypt.compare(req.body.password , user.password, function (err, result) {
         if (result === true) {
+          req.session.userId = user._id;
           return console.log("Usuario logado!!");
         } else {
+          req.session.userId = null;
           return console.log("Erro! Senha invalida!");
         }
       })

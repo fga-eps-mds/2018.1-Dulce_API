@@ -27,5 +27,25 @@ describe('Routing', function() {
 			done();
 		});
 	});
+
+  it('should return a error of user not found', function(done){
+    var profile = {
+      name: 'guilherme',
+      registration: '12345',
+      password: 'test',
+      manager: true
+    };
+request(url)
+  .post('/authenticate')
+  .send(profile)//Status code
+  .end(function(err,res) {
+    if (err) {
+      throw err;
+    }// Should.js fluent syntax applied
+    req.session.userId.should.be(null);
+    done();
+  });
+});
+
   });
 });
