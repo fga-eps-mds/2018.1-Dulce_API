@@ -17,17 +17,17 @@ mongo.connect(mongoaddr);
 var taskListSchema = mongo.Schema({
 	nome : { type: String },
 	matricula : { type: String },
-  setor : { type: String },
-  senha : { type: String },
-  hospital : { type: String },
+  	setor : { type: String },
+  	senha : { type: String },
+  	hospital : { type: String },
 });
 
 //Model da aplicação
-var Model = mongo.model('Tasks', taskListSchema);
+var Usuario = mongo.model('Tasks', taskListSchema);
 
 
 app.get("/api/get/:id", function (req, res) {
-	Model.find(function(err, post) {
+	Usuario.find(function(err, post) {
 		if (err) {
 			res.json(err);
 		} else {

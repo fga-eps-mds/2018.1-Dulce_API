@@ -9,9 +9,17 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "1.15.2",
     "express": "^4.14.0",
+    "jsonwebtoken": "^8.2.0",
     "mongoose": "^4.6.1",
-    "nodemon": "^1.10.2",
-    "body-parser": "1.15.2"
+    "morgan": "^1.9.0",
+    "nodemon": "^1.10.2"
+  },
+  "devDependencies": {
+    "mocha": "^5.0.5",
+    "should": "^13.2.1",
+    "supertest": "^3.0.0"
   }
 }

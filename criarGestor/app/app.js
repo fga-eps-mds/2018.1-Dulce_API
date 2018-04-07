@@ -8,47 +8,48 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+//Conexão com o MongoDB
 var mongoaddr = 'mongodb://' + process.env.MONGO_PORT_27017_TCP_ADDR + ':27017/testeapi';
 console.log(mongoaddr);
 mongo.connect(mongoaddr);
 
+//Esquema da collection do Mongo
 var taskListSchema = mongo.Schema({
 	nome : { type: String },
 	matricula : { type: String },
-  setor : { type: String },
-  senha : { type: String },
-  hospital : { type: String },
+  	setor : { type: String },
+  	senha : { type: String },
+  	hospital : { type: String },
 });
 
-var Model = mongo.model('Tasks', taskListSchema);
+//Model da aplicação
+var Usuario = mongo.model('Tasks', taskListSchema);
 
-//Cria usuario gestor
+//POST - Adiciona um Gestor
+app.post("/api/add", function (req, res) {
 
-app.post("/api/add", function(req,res){
+	var register = new Usuario({
+		'nome' : req.body.nome,
+		'matricula' : req.body.matricula,
+		'setor' : req.body.setor,
+		'senha' : req.body.senha,
+		'hospital' : req.body.hospital
+	});
 
-  var criar = new Model({
-    'nome' : req.body.nome,
-    'matricula' : req.body.nome,
-    'setor' : req.body.nome,
-    'senha' : req.body.nome,
-    'hospital' : req.body.nome
-  });
+	register.save(function (err) {
 
-  criar.save(function(err){
+		if (err) {
+			console.log(err);
+			res.send(err);
+			res.end();
+		}
 
-    if(err){
-      console.log(err);
-      res.send(err);
-      res.end();
-    }
-  });
-
-  res.send(criar);
-  res.end();
+	});
+	res.send(register);
+	res.end();
 });
 
-app.listen(8080, function(){
-  console.log(Rodando);
-})
-
-//Fim da API
+//Porta de escuta do servidor
+app.listen(8080, function() {
+	console.log('Funcionando');
+});

@@ -13,4 +13,4 @@ application:
   volumes:
    - ./app:/usr/src/app
   links:
-   - mongo
+   - mongo 
