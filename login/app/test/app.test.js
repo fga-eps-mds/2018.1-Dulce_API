@@ -28,7 +28,7 @@ describe('Routing', function() {
 		});
 	});
 
-  it('should give a user not found', function(done){
+  it('should return a json', function(done){
     var profile = {
       registration: '1234',
       password: 'test',
@@ -40,7 +40,7 @@ request(url)
     if (err) {
       throw err;
     }
-    res.json.should.equal({success: false, message:'Authentication failed. User not found.'})
+    res.should.be.json;
     done();
   });
 });
