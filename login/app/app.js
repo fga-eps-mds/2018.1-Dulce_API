@@ -58,19 +58,21 @@ app.post('/authenticate',function(req,res){
           message: 'Authentication failed. User not found.'
         });
       }
-      bcrypt.compare(req.body.password, user.password, function (err, result) {
-        if (result === true) {
-          res.json({
-            success: true,
-            message: 'Authentication succeded.'
-          });
-        } else {
-          res.json({
-            success: false,
-            message: 'Authentication failed. Wrong password'
-          })
-        }
-      })
+      else {
+        bcrypt.compare(req.body.password, user.password, function (err, result) {
+          if (result === true) {
+            res.json({
+              success: true,
+              message: 'Authentication succeded.'
+            });
+          } else {
+            res.json({
+              success: false,
+              message: 'Authentication failed. Wrong password'
+            })
+          }
+        });
+      }
     });
 });
 
