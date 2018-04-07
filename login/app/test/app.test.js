@@ -5,6 +5,7 @@ var should = require('should');
 
 describe('Routing', function() {
   var url = 'http://localhost:8080';
+
   describe('Login', function() {
     it('should create a new user', function(done){
       var profile = {
@@ -20,7 +21,6 @@ describe('Routing', function() {
 			if (err) {
 				throw err;
 			}
-			// Should.js fluent syntax applied
 	    res.body.name.should.equal('gui');
 	    res.body.registration.should.equal('12345');
 	    res.body.manager.should.equal(true);
@@ -28,12 +28,10 @@ describe('Routing', function() {
 		});
 	});
 
-  it('should return a error of user not found', function(done){
+  it('should give a user not found', function(done){
     var profile = {
-      name: 'guilherme',
-      registration: '12345',
+      registration: '1234',
       password: 'test',
-      manager: true
     };
 request(url)
   .post('/authenticate')
@@ -41,8 +39,8 @@ request(url)
   .end(function(err,res) {
     if (err) {
       throw err;
-    }// Should.js fluent syntax applied
-    req.session.userId.should.be(null);
+    }
+    res.json.should.equal({success: false, message:'Authentication failed. User not found.'})
     done();
   });
 });

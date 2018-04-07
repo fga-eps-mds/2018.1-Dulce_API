@@ -51,15 +51,22 @@ app.post('/authenticate',function(req,res){
       if (err) {
         return callback(err)
       } else if (!user) {
-        var err = new Error('Usuario nao encontrado!');
-        err.status = 401;
-        return err;
+        res.json({
+          success: false,
+          message: 'Authentication failed. User not found.'
+        });
       }
-      bcrypt.compare(req.body.password , user.password, function (err, result) {
+      bcrypt.compare(req.body.password, user.password, function (err, result) {
         if (result === true) {
-          return console.log("Usuario logado!") ;
+          res.json({
+            success: true,
+            message: 'Authentication succeded.'
+          });
         } else {
-          return console.log("Erro! Senha invalida!");
+          res.json({
+            success: false,
+            message: 'Authentication failed. Wrong password'
+          })
         }
       })
     });
