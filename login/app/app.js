@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+
 var mongoaddr = 'mongodb://' + process.env.MONGO_PORT_27017_TCP_ADDR + ':27017/testeapi';
 console.log(mongoaddr);
 mongo.connect(mongoaddr);
@@ -50,22 +51,20 @@ app.post('/authenticate',function(req,res){
       if (err) {
         return callback(err)
       } else if (!user) {
-        var err = new Error('Usuario nao enco');
+        var err = new Error('Usuario nao encontrado!');
         err.status = 401;
-        req.session.userId = null;
-        return console.log("Erro!")
+        return err;
       }
       bcrypt.compare(req.body.password , user.password, function (err, result) {
         if (result === true) {
-          req.session.userId = user._id;
-          return console.log("Usuario logado!!");
+          return console.log("Usuario logado!") ;
         } else {
-          req.session.userId = null;
           return console.log("Erro! Senha invalida!");
         }
       })
     });
 });
+
 
 app.listen(8080,function(){
   console.log('Funcionando!');
