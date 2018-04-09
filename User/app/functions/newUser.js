@@ -1,25 +1,33 @@
 var User = require('./model/user');
-
+var bcrypt = require('bcrypt');
 
 module.exports = function (req, res) {
 
-	var register = new User({
-		'name' : req.body.name,
-		'registration' : req.body.registration,
-		'sector' : req.body.sector,
-    'hospital' : req.body.hospital,
-		'password' : req.body.password
-	});
+    bcrypt.hash(req.body.password, 10, function (err, hash){
 
-	register.save(function (err) {
+      if (err) {
+        return res.json({
+          message: 'password not found.'
+        });
+      }
+  		var register = new User({
+  			'name' : req.body.name,
+  			'registration' : req.body.registration,
+        'sector' : req.body.sector,
+        'hospital' : req.body.hospital,
+  			'password' : hash,
+  			'manager' : req.body.manager
+        });
 
-		if (err) {
-			console.log(err);
-			res.send(err);
-			res.end();
-		}
+  		register.save(function (err) {
 
-	});
-	res.send(register);
-	res.end();
-}
+  			if (err) {
+  				console.log(err);
+  				res.end();
+  			}
+  		});
+  	res.send(register);
+  	res.end();
+
+    });
+  }

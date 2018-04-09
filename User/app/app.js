@@ -3,6 +3,8 @@ var bodyParser = require('body-parser');
 var mongo = require('mongoose');
 
 var newUser = require('./functions/newUser');
+var allUsers = require('./functions/allUsers');
+var login = require('./functions/login');
 
 
 var app = express();
@@ -19,6 +21,9 @@ mongo.connect(mongoaddr);
 
 
 app.post("/user/add", newUser);
+app.get("/user/all", allUsers);
+app.post('/user/login', login);
+
 
 app.listen(8080, function() {
 	console.log('Funcionando');
