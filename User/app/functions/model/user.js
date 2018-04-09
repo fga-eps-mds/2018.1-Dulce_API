@@ -18,7 +18,7 @@ module.exports = mongoose.model('User', new Schema({
    hospital: {
      type: String,
      required: true,
-   }
+   },
    password: {
      type: String,
      required: true,
