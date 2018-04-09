@@ -5,6 +5,7 @@ var mongo = require('mongoose');
 var newUser = require('./functions/newUser');
 var allUsers = require('./functions/allUsers');
 var viewUser = require('./functions/viewUser');
+var editUser = require('./functions/editUser');
 var login = require('./functions/login');
 
 
@@ -25,6 +26,7 @@ app.post('/user/add', newUser);
 app.get('/user/all', allUsers);
 app.post('/user/login', login);
 app.get('/user/view/:id', viewUser);
+app.put('/user/edit/:id', editUser);
 
 
 
