@@ -7,5 +7,5 @@ module.exports = function (req, res) {
 		} else {
 			res.json(user);
 		}
-	})
+	});
 }
