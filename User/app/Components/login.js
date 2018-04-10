@@ -1,7 +1,7 @@
 var User = require('./model/user');
 var bcrypt = require('bcrypt');
 
-module.exports = function(req,res){
+module.exports = (req,res) => {
   User.findOne({ registration: req.body.registration})
     .exec(function (err, user) {
       if (err) {

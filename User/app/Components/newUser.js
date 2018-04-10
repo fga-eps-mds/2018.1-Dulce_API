@@ -1,7 +1,7 @@
 var User = require('./model/user');
 var bcrypt = require('bcrypt');
 
-module.exports = function (req, res) {
+module.exports = (req, res) => {
 
     bcrypt.hash(req.body.password, 10, function (err, hash){
 

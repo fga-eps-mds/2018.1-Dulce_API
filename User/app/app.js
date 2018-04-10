@@ -2,11 +2,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongo = require('mongoose');
 
-var newUser = require('./functions/newUser');
-var allUsers = require('./functions/allUsers');
-var viewUser = require('./functions/viewUser');
-var editUser = require('./functions/editUser');
-var login = require('./functions/login');
+var newUser = require('./Components/newUser');
+var allUsers = require('./Components/allUsers');
+var viewUser = require('./Components/viewUser');
+var editUser = require('./Components/editUser');
+var login = require('./Components/login');
 
 
 var app = express();
