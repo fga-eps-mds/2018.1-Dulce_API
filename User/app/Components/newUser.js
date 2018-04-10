@@ -10,6 +10,8 @@ module.exports = (req, res) => {
           message: 'password not found.'
         });
       }
+      if (req.body.name, req.body.registration, req.body.sector, req.body.hospital, req.body.password, req.body.manager) {
+
   		var register = new User({
   			'name' : req.body.name,
   			'registration' : req.body.registration,
@@ -28,6 +30,13 @@ module.exports = (req, res) => {
   		});
   	res.send(register);
   	res.end();
+
+   } else{
+    res.json({
+      success: false,
+      message: 'something is missing or wrong.'
+    });
+   }
 
     });
   }
