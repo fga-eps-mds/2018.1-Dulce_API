@@ -15,7 +15,10 @@
     "jsonwebtoken": "^8.2.0",
     "mongoose": "^4.6.1",
     "morgan": "^1.9.0",
-    "nodemon": "^1.10.2"
+    "nodemon": "^1.10.2",
+    "seneca": "^3.4.3",
+    "seneca-web": "^2.2.0",
+    "seneca-web-adapter-express": "^1.1.1"
   },
   "devDependencies": {
     "istanbul": "^0.4.5",
