@@ -15,7 +15,8 @@ UserSchema = new Schema({
     required: true
   },
   sector: {
-    type: String
+    type: String,
+    required: true
   },
   hospital: {
     type: String,

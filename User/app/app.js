@@ -32,11 +32,12 @@ app.post('/user/login', login);
 app.get('/user/view/:id', viewUser);
 app.put('/user/edit/:id', editUser);
 
+appRoutes = express.Router();
 
-app.use((req, res, next) => {
+appRoutes.use((req, res, next) => {
 
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.headers['x-access-token'];
+    // check header or post parameters for token
+    var token = req.body.token || req.headers['Bearer'];
   
     // decode token
     if (token) {
@@ -64,6 +65,7 @@ app.use((req, res, next) => {
     }
 });
     
+app.use('/main', appRoutes);
   
 
 app.listen(8080, function() {
