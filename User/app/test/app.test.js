@@ -15,7 +15,7 @@ describe('Routing', function() {
         manager: true
       };
 	request(url)
-		.post('/api/add')
+		.post('/user/add')
 		.send(profile)//Status code
 		.end(function(err,res) {
 			if (err) {
@@ -34,7 +34,7 @@ describe('Routing', function() {
       password: 'test',
     };
 request(url)
-  .post('/authenticate')
+  .post('/user/login')
   .send(profile)//Status code
   .end(function(err,res) {
     if (err) {
