@@ -1,27 +1,30 @@
-var User = require('./model/user');
-var seneca = require( 'seneca' )( );
+var entities = require('seneca-entity')
 
-  seneca.add( 'role:user,cmd:create', function create( msg, respond ) {
+module.exports = function newUser(options) {
 
-    var register = new User({
-      'name' : msg.name,
-      'registration' : msg.registration,
-      'sector' : msg.sector,
-      'hospital' : msg.hospital,
-      'password' : msg.password,
-      'manager' : msg.manager
-    });
-
-  register.save(function (err) {
-
-    if (err) {
-      console.log(err);
-      res.end();
-    }
-  });
-
-  res.send(register);
-  res.end();
-
-    respond( null, { answer: msg.left + msg.right } )
+  this.use('mongo-store',{
+    name:'dbname',
+    host:'mongo',
+    port:27017
   })
+    .use("entity")
+
+  this.add( 'role:user,cmd:create', function create( msg, respond ) {
+
+    var register = this.make$('register')
+
+      reister.name = msg.name
+      reister.registration = msg.registration
+      reister.sector = msg.sector
+      reister.hospital = msg.hospital
+      reister.password = msg.password
+      reister.manager = msg.manager
+
+      register.save$(function(err,register){
+      console.log(register)
+    })
+
+  respond( null, register)
+
+  })
+}
