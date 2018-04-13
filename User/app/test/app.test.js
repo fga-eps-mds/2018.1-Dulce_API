@@ -3,6 +3,21 @@ var request = require('supertest');
 var mongo    = require('mongoose');
 var should = require('should');
 
+let login_details = {
+  'registration': 'bosta',
+  'password': '1234'
+}
+ 
+let register_details = {
+  'name': 'Rexford',
+  'registration': 'bosta',
+  'hospital': 'Gama',
+  'sector' : '1234',
+  'password': '1234',
+  'manager': true
+};
+ 
+
 describe('Routing', function() {
   var url = 'http://localhost:8080';
 
@@ -36,6 +51,8 @@ describe('Routing', function() {
 	});
 });
 
+ 
+
 describe('should test login', () => {
   it('should return a json', (done) => {
     var profile = {
@@ -66,11 +83,9 @@ describe('should test showing all users', () => {
          throw err;
        }
     res.should.be.json;
-    done();
      });
    });
 });
-
 
 
 
@@ -84,7 +99,6 @@ describe('should test viewing one user', () => {
          throw err;
        }
     res.should.be.json;
-    done();
      });
    });
 });
@@ -109,5 +123,45 @@ describe('should test editing user', () => {
    });
 });
 
+describe('/POST Register', () => {
+  it('it should Register, Login, and check token', () => {
+      request(url)
+      .post('/user/add')
+      .send(register_details) // this is like sending a post with a new User
+      .end((err, res) => { // when we get a response from the endpoint
+        // in other words,
+        // the res object should have a status of 201
+        res.should.have.status(201);
+        // the property, res.body.state, we expect it to be true.
+        expect(res.body.state).to.be.true;
+
+        // follow up with login
+          request(url)
+          .post('/user/login')
+          .send(login_details)
+          .end((err, res) => {
+            console.log('this was run the login part');
+            res.should.have.status(200);
+            expect(res.body.state).to.be.true;
+            res.body.should.have.property('token'); 
+            
+            let token = res.body.token;
+            // follow up with requesting user protected page
+              request(url)
+              .get('/user/all')
+              // we set the auth header with our token
+              .set('x-access-token', token)
+              .end((err, res) => {
+                res.should.have.status(200);
+                expect(res.body.state).to.be.true;
+                res.body.data.should.be.an('array');
+
+                done(); // Don't forget the done callback to indicate we're done!
+              })
+          })
+           
+      })
+    })
+  })
 
 });
