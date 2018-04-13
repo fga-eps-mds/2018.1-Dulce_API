@@ -4,13 +4,14 @@ module.exports = function api(options) {
 
   this.add('role:api,path:userManager', function (msg, respond) {
 
+    console.log(msg)
     var operation = msg.args.params.operation
-    var name = msg.args.query.name
-    var registration = msg.args.query.registration
-    var sector = msg.args.query.sector
-    var hospital = msg.args.query.hospital
-    var password = msg.args.query.password
-    var manager = msg.args.query.manager
+    var name = msg.args.body.name
+    var registration = msg.args.body.registration
+    var sector = msg.args.body.sector
+    var hospital = msg.args.body.hospital
+    var password = msg.args.body.password
+    var manager = msg.args.body.manager
 
     this.act('role:user', {
       cmd:   valid_ops[operation],
@@ -29,7 +30,7 @@ module.exports = function api(options) {
       prefix: '/api',
       pin:    'role:api,path:*',
       map: {
-        userManager: { GET:true, suffix:'/:operation' }
+        userManager: { POST:true, suffix:'/:operation' }
       }
     }}, respond)
   })
