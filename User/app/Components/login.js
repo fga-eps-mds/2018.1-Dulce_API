@@ -25,7 +25,8 @@ module.exports = (req,res) => {
             res.json({
               success: true,
               message: 'Authentication succeded.',
-              token: token
+              token: token,
+              id: user._id
             });
           } else {
             res.json({
