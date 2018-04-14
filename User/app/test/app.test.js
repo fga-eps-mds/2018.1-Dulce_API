@@ -73,8 +73,8 @@ request(url)
 
   });
 
-describe('should test showing all users', () => {
-  it('should return all users', () => {
+describe('should test the token validation', () => {
+  it('should return an error message: not token provided', () => {
     request(url)
     .get('/user/all')
     .send()//Status code
@@ -83,8 +83,26 @@ describe('should test showing all users', () => {
          throw err;
        }
     res.should.be.json;
+    res.body.message.should.equal('No token provided.');
+    res.body.success.should.equal(false);
      });
    });
+
+    it('should return an error of: Failed to authenticate token.', () => {
+      request(url)
+        .get('/user/all')
+        .send()
+        .end((err,res) => {
+          if (err) {
+            throw err;
+          }
+      res.should.be.json;
+      res.body.message.should.equal('No token provided.');
+      res.body.success.should.equal(false);
+      
+     });
+   });
+
 });
 
 
@@ -93,12 +111,15 @@ describe('should test viewing one user', () => {
   it('should return one user', () => {
     request(url)
     .get('/user/view')
-    .send()//Status code
+    .set('x-access-token', 'any string')
     .end((err,res) => {
        if (err) {
          throw err;
        }
     res.should.be.json;
+    res.body.message.should.equal('Failed to authenticate token.');
+    res.body.success.should.equal(false);
+    
      });
    });
 });
@@ -118,7 +139,6 @@ describe('should test editing user', () => {
          throw err;
        }
     res.should.be.json;
-    done();
      });
    });
 });
@@ -156,7 +176,6 @@ describe('/POST Register', () => {
                 expect(res.body.state).to.be.true;
                 res.body.data.should.be.an('array');
 
-                done(); // Don't forget the done callback to indicate we're done!
               })
           })
            
