@@ -3,27 +3,13 @@ var request = require('supertest');
 var mongo = require('mongoose');
 var should = require('should');
 
-let login_details = {
-  'registration': 'bosta',
-  'password': '1234'
-}
- 
-let register_details = {
-  'name': 'Rexford',
-  'registration': 'bosta',
-  'hospital': 'Gama',
-  'sector' : '1234',
-  'password': '1234',
-  'manager': true
-};
-
 
 describe('Routing', function() {
-  var url = 'http://localhost:8080';
+  const url = 'http://localhost:8080';
 
   describe('should test new user creation', () => {
     it('should create a new user',(done) => {
-      var profile = {
+      let profile = {
         name: 'gui',
         registration: '12345',
         hospital: 'gama',          //creating a user to send
@@ -89,7 +75,20 @@ describe('should test the token validation', () => {
 
 describe('/POST Register', () => {
   it('it should Register, Login, and check token', () => {
-      request(url)
+    let login_details = {
+      'registration': 'bosta',
+      'password': '1234'
+    }
+     
+    let register_details = {
+      'name': '',
+      'registration': '54321',
+      'hospital': 'Gama',
+      'sector' : '1234',
+      'password': '1234',
+      'manager': true
+    };
+    request(url)
       .post('/user/add')
       .send(register_details) // this is like sending a post with a new User
       .end((err, res) => { // when we get a response from the endpoint
@@ -100,7 +99,7 @@ describe('/POST Register', () => {
         expect(res.body.state).to.be.true;
 
         // follow up with login
-          request(url)
+        request(url)
           .post('/user/login')
           .send(login_details)
           .end((err, res) => {
