@@ -81,7 +81,7 @@ describe('/POST Register', () => {
     }
      
     let register_details = {
-      'name': '',
+      'name': 'John',
       'registration': '54321',
       'hospital': 'Gama',
       'sector' : '1234',
