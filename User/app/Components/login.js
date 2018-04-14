@@ -14,7 +14,7 @@ module.exports = (req,res) => {
       } else if (!user) {
         res.status(401).json({
           success: false,
-          message: 'Authentication failed. User not found.'
+          message: 'Falha na autentificação. Usuário não encontrado.'
         });
       }
       else {
@@ -31,7 +31,7 @@ module.exports = (req,res) => {
           } else {
             res.status(401).json({
               success: false,
-              message: 'Authentication failed. Wrong password'
+              message: 'Falha na autentificação. Senha errada.'
             })
           }
         });
