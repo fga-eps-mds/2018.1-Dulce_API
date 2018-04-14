@@ -53,26 +53,6 @@ describe('Routing', function() {
 
  
 
-describe('should test login', () => {
-  it('should return a json', (done) => {
-    var profile = {
-      registration: '1234',
-      password: 'test',
-    };
-  request(url)
-    .post('/user/login')
-    .send(profile)//Status code
-    .end((err,res) => {
-      if (err) {
-        throw err;
-      }
-    res.should.be.json;
-    done();
-  });
-});
-
-  });
-
 describe('should test the token validation', () => {
   it('should return an error message: not token provided', () => {
     request(url)
@@ -106,39 +86,6 @@ describe('should test the token validation', () => {
 
 });
 
-
-
-describe('should test viewing one user', () => {
-  it('should return one user', () => {
-    request(url)
-    .get('/user/view')
-        .end((err,res) => {
-       if (err) {
-         throw err;
-       }
-    res.should.be.json;
-     });
-   });
-});
-
-
-describe('should test editing user', () => {
-  it('should return a json response', () => {
-    var profile = {
-      hospital: 'gama',
-      sector: 'sul',
-    };
-    request(url)
-    .put('/user/edit')
-    .send(profile)//Status code
-    .end((err,res) => {
-       if (err) {
-         throw err;
-       }
-    res.should.be.json;
-     });
-   });
-});
 
 describe('/POST Register', () => {
   it('it should Register, Login, and check token', () => {
