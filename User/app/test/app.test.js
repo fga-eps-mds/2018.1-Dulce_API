@@ -1,6 +1,6 @@
 var assert = require('assert');
 var request = require('supertest');
-var mongo    = require('mongoose');
+var mongo = require('mongoose');
 var should = require('should');
 
 let login_details = {
@@ -16,7 +16,7 @@ let register_details = {
   'password': '1234',
   'manager': true
 };
- 
+
 
 describe('Routing', function() {
   var url = 'http://localhost:8080';
@@ -26,14 +26,14 @@ describe('Routing', function() {
       var profile = {
         name: 'gui',
         registration: '12345',
-        hospital: 'gama',
+        hospital: 'gama',          //creating a user to send
         sector: 'gama',
         password: 'test',
         manager: true
       };
 	request(url)
 		.post('/user/add')
-		.send(profile)//Status code
+		.send(profile)    //sending user to api
 		.end((err,res) => {
 			if (err) {
 				throw err;
@@ -59,13 +59,13 @@ describe('should test login', () => {
       registration: '1234',
       password: 'test',
     };
-request(url)
-  .post('/user/login')
-  .send(profile)//Status code
-  .end((err,res) => {
-    if (err) {
-      throw err;
-    }
+  request(url)
+    .post('/user/login')
+    .send(profile)//Status code
+    .end((err,res) => {
+      if (err) {
+        throw err;
+      }
     res.should.be.json;
     done();
   });
@@ -85,21 +85,22 @@ describe('should test the token validation', () => {
     res.should.be.json;
     res.body.message.should.equal('No token provided.');
     res.body.success.should.equal(false);
+    res.status.should.equal(403);
      });
    });
 
     it('should return an error of: Failed to authenticate token.', () => {
       request(url)
         .get('/user/all')
-        .send()
+        .set('x-access-token', 'any string')
         .end((err,res) => {
           if (err) {
             throw err;
           }
-      res.should.be.json;
-      res.body.message.should.equal('No token provided.');
-      res.body.success.should.equal(false);
-      
+          res.should.be.json;
+          res.body.message.should.equal('Failed to authenticate token.');
+          res.body.success.should.equal(false);
+          res.status.should.equal(403);
      });
    });
 
@@ -111,15 +112,11 @@ describe('should test viewing one user', () => {
   it('should return one user', () => {
     request(url)
     .get('/user/view')
-    .set('x-access-token', 'any string')
-    .end((err,res) => {
+        .end((err,res) => {
        if (err) {
          throw err;
        }
     res.should.be.json;
-    res.body.message.should.equal('Failed to authenticate token.');
-    res.body.success.should.equal(false);
-    
      });
    });
 });
@@ -172,10 +169,9 @@ describe('/POST Register', () => {
               // we set the auth header with our token
               .set('x-access-token', token)
               .end((err, res) => {
-                res.should.have.status(200);
+                res.status.should.equal(200);
                 expect(res.body.state).to.be.true;
                 res.body.data.should.be.an('array');
-
               })
           })
            
