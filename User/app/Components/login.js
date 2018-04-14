@@ -12,9 +12,9 @@ module.exports = (req,res) => {
       if (err) {
         return callback(err)
       } else if (!user) {
-        res.json({
+        res.status(401).json({
           success: false,
-          message: 'Authentication failed. User not found.'
+          message: 'Falha na autentificação. Usuário não encontrado.'
         });
       }
       else {
@@ -22,15 +22,16 @@ module.exports = (req,res) => {
           if (result === true) {
             var payload = req.body;
             var token = jwt.sign(payload, SECRET_KEY, {expiresIn});
-            res.json({
+            res.status(200).json({
               success: true,
               message: 'Authentication succeded.',
-              token: token
+              token: token,
+              id: user._id
             });
           } else {
-            res.json({
+            res.status(401).json({
               success: false,
-              message: 'Authentication failed. Wrong password'
+              message: 'Falha na autentificação. Senha errada.'
             })
           }
         });
