@@ -1,5 +1,3 @@
-//var User = require('./model/user');
-
 module.exports = function User(options) {
 
   this.add('role:user, cmd:create', function create( msg, respond ) {

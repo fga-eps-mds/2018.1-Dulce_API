@@ -5,11 +5,9 @@ module.exports = function api(options) {
     var registration = msg.args.body.registration
     var password = msg.args.body.password
 
-console.log("Qualquer coisinha")
-
     this.act('role:login, cmd:authenticate', {
       registration: registration,
-      password: password
+      password: password,
     }, respond)
   })
 

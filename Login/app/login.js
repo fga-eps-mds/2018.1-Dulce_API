@@ -1,4 +1,3 @@
-var User = require('./model/user');
 var bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -27,7 +26,8 @@ module.exports = function Login(options) {
                   respond(null,{
                     success: true,
                     message: 'Authentication succeded.',
-                    token: token
+                    token: token,
+                    id: user._id
                   });
                 } else {
                   respond(null,{
