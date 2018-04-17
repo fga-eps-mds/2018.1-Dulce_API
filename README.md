@@ -35,10 +35,17 @@ que permite o envio e recebimento dados via requisições HTTP.
 
 *  Para adicionar um usuário através do Postman, devemos digitar a seguinte rota: `http://localhost:8080/user/add`
 
-O metodo para adicionar usuario deve ser o ***POST*** e na subseção ***BODY*** deve conter os respectivos atributos do usuario, que são:
-nome, matricula, setor, hospital, senha
+O método para adicionar usuario deve ser o ***POST*** e na subseção ***BODY*** deve conter os respectivos atributos do usuario, que são:
+name, registration, sector, hospital, password.
 
 Ao clicar em ***SEND*** , será exibido um ***JSON*** com as informações do usuario , isso confirmará o cadastro do usuário.
 
  <img src='src/img/PostmanAdd.png'>
- 
+
+ * Para logar um usuário através do Postman, devemos digitar a seguinte rota: `http://localhost:8080/user/login`
+
+ O método para ***LOGIN***, deve ser o ***POST*** e na subseção ***BODY*** deve conter os atributos registration , password.
+
+Ao clicar em ***SEND*** , será exibido um ***JSON*** com o status de sucesso ao logar , uma messagem indicando sucesso , o token, id do usuario , isso confirmará o sucesso ao logar o usuário.
+
+<img src='src/img/PostmanLogin.jpg'>
