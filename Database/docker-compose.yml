@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+     - "27017:27017"
+    volumes:
+     - './data:/data/db'
+    networks:
+     - gabriela
+networks:
+  gabriela:
+    name: my_network
