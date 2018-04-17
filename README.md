@@ -72,8 +72,24 @@ Ao clicar em ***SEND*** , será exibido um ***JSON*** com status e mensagem indi
 
 <img src='src/img/EditUserFailed.jpg'>
 
-No caso acima , houve falha pois para acessar a edição é necessário um token do usuário ao qual tera o perfil editado.
+No caso acima , houve falha pois para acessar a edição é necessário um token do usuário ao qual terá o perfil editado.
 
-Para ter sucesso ao editar a informações do usuario logado , na subseção HEADERS deverá conter `x-access-token` tendo o valor do token válido  do usuário, com isso será possível obter sucesso na visualização.
+Para ter sucesso ao editar a informações do usuario logado , na subseção HEADERS deverá conter `x-access-token` tendo o valor do token válido  do usuário, com isso será possível obter sucesso na edição.
 
 <img src='src/img/EditUserSucess.jpg'>
+
+* Para Visualizar todos os usuário através do Postman, devemos digitar a seguinte rota: `http://localhost:8080/user/all`.
+
+O método para visualizar todos os usuarios deve ser o ***GET*** e na subseção ***BODY*** deve conter o token.
+
+<img src='src/img/PostmanListFail.png'>
+
+No caso acima , houve falha pois para acessar a visualização da lista de usuários é necessário um token do usuário logado.
+
+Para ter sucesso ao visualizar a lista de usuários, o usuario logado, na subseção HEADERS deverá conter `x-access-token` tendo o valor do token válido  do usuário, com isso será possível obter sucesso na visualização da lista de usuários.
+
+<img src='src/img/PostmanListSucess.png'>
+
+##### Requisições externas
+
+Para uso da API se faz necessário o uso do ***DOCKER*** portanto , para a utilização do localhost , o IP será `172.17.0.1`.
