@@ -63,3 +63,17 @@ No caso acima , houve falha pois para acessar a visualizaçao é necessário um 
 Para ter sucesso ao visualizar a informações do usuario logado , na subseção HEADERS deverá conter `x-access-token` tendo o valor do token válido  do usuário, com isso será possível obter sucesso na visualização.
 
 <img src='src/img/PostmanViewSucess.png'>
+
+* Para Editar um usuário através do Postman, devemos digitar a seguinte rota: `http://localhost:8080/user/edit/id`, o id e gerado no momento da criação do usuário.
+
+O método para editar usuario deve ser o ***PUT*** e na subseção ***BODY*** deve conter os respectivos atributos do usuario que serão editados.
+
+Ao clicar em ***SEND*** , será exibido um ***JSON*** com status e mensagem indicando sucesso ou falha na edição
+
+<img src='src/img/EditUserFailed.jpg'>
+
+No caso acima , houve falha pois para acessar a edição é necessário um token do usuário ao qual tera o perfil editado.
+
+Para ter sucesso ao editar a informações do usuario logado , na subseção HEADERS deverá conter `x-access-token` tendo o valor do token válido  do usuário, com isso será possível obter sucesso na visualização.
+
+<img src='src/img/EditUserSucess.jpg'>
