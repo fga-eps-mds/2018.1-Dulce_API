@@ -37,7 +37,7 @@ que permite o envio e recebimento dados via requisições HTTP.
 
 O método para adicionar usuario deve ser o ***POST*** e na subseção ***BODY*** deve conter os respectivos atributos do usuario, que são:
 name, registration, sector, hospital, password.
-
+Non
 Ao clicar em ***SEND*** , será exibido um ***JSON*** com as informações do usuario , isso confirmará o cadastro do usuário.
 
  <img src='src/img/PostmanAdd.png'>
@@ -49,3 +49,17 @@ Ao clicar em ***SEND*** , será exibido um ***JSON*** com as informações do us
 Ao clicar em ***SEND*** , será exibido um ***JSON*** com o status de sucesso ao logar , uma messagem indicando sucesso , o token, id do usuario , isso confirmará o sucesso ao logar o usuário.
 
 <img src='src/img/PostmanLogin.jpg'>
+
+* Para Visualizar um usuário através do Postman, devemos digitar a seguinte rota: `http://localhost:8080/user/view/id`, o id e gerado no momento da criação do usuário.
+
+O método para ***VIEW***, deve ser o ***GET*** .
+
+Ao clicar em ***SEND*** , será exibido um ***JSON*** , informando o sucesso ou a falha da visualização e uma mensagem.
+
+<img src='src/img/PostmanViewFailed.png'>
+
+No caso acima , houve falha pois para acessar a visualizaçao é necessário um token do usuário.
+
+Para ter sucesso ao visualizar a informações do usuario logado , na subseção HEADERS deverá conter `x-access-token` tendo o valor do token válido  do usuário, com isso será possível obter sucesso na visualização.
+
+<img src='src/img/PostmanViewSucess.png'>
