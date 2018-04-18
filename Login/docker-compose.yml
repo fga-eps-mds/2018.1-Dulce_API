@@ -4,7 +4,7 @@ services:
     build: .
     command:  bash -c "npm install; nodemon app.js --color=always"
     ports:
-     - "8081:8080"
+     - "8083:8080"
      - "5859:5858"
     volumes:
      - ./app:/usr/src/app
