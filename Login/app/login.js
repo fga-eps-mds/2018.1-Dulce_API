@@ -14,7 +14,7 @@ module.exports = function Login(options) {
              if (!user) {
                respond( null,{
                  success: false,
-                 message: 'Authentication failed. User not found.'
+                 message: ' Falha de autenticação. Usuário não encontrado.'
                });
              } else {
                 if(msg.password == user.password ){
@@ -25,14 +25,21 @@ module.exports = function Login(options) {
                   var token = jwt.sign(payload, SECRET_KEY, {expiresIn});
                   respond(null,{
                     success: true,
-                    message: 'Authentication succeded.',
+                    message: 'Autenticação realizada com sucesso!',
                     token: token,
-                    id: user._id
+                    user: {
+                        id: user.id,
+                        name: user.name,
+                        sector: user.sector,
+                        hospital: user.hospital,
+                        manager: user.manager,
+                        registration: user.registration }
+
                   });
                 } else {
                   respond(null,{
                     success: false,
-                    message: 'Authentication failed. Wrong password'
+                    message: 'Falha de autenticação. Senha incorreta! '
                   })
                 }
               }
