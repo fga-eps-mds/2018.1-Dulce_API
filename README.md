@@ -1,7 +1,11 @@
 # Dulce-API
 
-Dulce-API provê API's Restful para o desenvolvimento de Apps utilizando microsserviços.
+Dulce-API provê API's para o desenvolvimento de Apps utilizando microsserviços.
 Cada API descreve apenas uma funcionalidade de um sistema, isso torna a aplicação modular e favorece o baixo acoplamento.
+
+Microsserviços é uma estratégia de arquitetura de software que vem sendo aplicada há alguns anos com o objetivo de proporcionar uma melhor escalabilidade aos serviços. Ao projetar esse novo modelo arquitetural, os princípios de orientação a objetos, desacoplamento e responsabilidades tornam-se fundamentais.
+
+O conceito principal dentro do microsserviços é estabelecer pequenos serviços que possam funcionar de forma independente, permitindo assim a sua escala por serviço e, permitindo inclusive garantir o funcionamento da operação mesmo em caso de falha de um determinado serviço.
 
 ## Instalação e uso
 
