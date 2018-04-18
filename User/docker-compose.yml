@@ -1,23 +1,16 @@
-version: "3.5"
-services:
-  usersmicroservice:
-    build: .
-    command:  bash -c "npm install; nodemon app.js --color=always"
-    ports:
-     - "8080:8080"
-     - "5858:5858"
-    volumes:
-     - ./app:/usr/src/app
-    networks:
-     - mongo_gabriela
-    networks:
-     - mongo_gabriela
-     - rabbitmq_gama
-
-networks:
-  mongo_gabriela:
-    external:
-      name: my_network
-  rabbitmq_gama:
-    external:
-      name: my_network_gama
+mongo:
+  image: mongo:latest
+  ports:
+   - "27017:27017"
+  volumes:
+   - './data:/data/db'
+application:
+  build: .
+  command:  bash -c "npm install; nodemon app.js --color=always"
+  ports:
+   - "8080:8080"
+   - "5858:5858"
+  volumes:
+   - ./app:/usr/src/app
+  links:
+   - mongo
