@@ -17,6 +17,7 @@
     "morgan": "^1.9.0",
     "nodemon": "^1.10.2",
     "seneca": "^3.4.3",
+    "seneca-amqp-transport": "^2.2.0",
     "seneca-entity": "^2.0.2",
     "seneca-mongo-store": "^1.1.0",
     "seneca-web": "^2.2.0",

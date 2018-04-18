@@ -4,9 +4,23 @@ const jwt = require('jsonwebtoken');
 const SECRET_KEY = '123456789';
 const expiresIn = '1h';
 
-module.exports = function Login(options) {
+require('seneca')().use('mongo-store',{
+    name:'dataBaseUsers',
+    host:'mongo',
+    port:27017
+  })
+ .use("entity")
+ .use('seneca-amqp-transport')
+ .listen({
+    type:'amqp',
+    pin:'role:login',
+    port: 5672,
+    username: 'guest',
+    password: 'guest',
+    url: 'amqp://rabbit',
+})
 
-  this.add('role:login, cmd:authenticate', function(msg, respond) {
+  .add('role:login, cmd:authenticate', function(msg, respond) {
 
           var registration = msg.registration;
           var user = this.make('users')
@@ -45,4 +59,3 @@ module.exports = function Login(options) {
               }
     	});
     });
-}

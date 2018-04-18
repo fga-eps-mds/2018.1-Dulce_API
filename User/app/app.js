@@ -17,12 +17,15 @@ var senecaWebConfig = {
 
 var seneca = require('seneca')()
       .use(SenecaWeb, senecaWebConfig )
+      .use('seneca-amqp-transport')
       .use('user')
-      .use('api')
       .use("entity")
-      .use('mongo-store',{
-          name:'dataBaseUsers',
-          host:'mongo',
-          port:27017
-        })
-      .client( { type:'tcp', pin:'role:user' } )
+      .use('api')
+      .client( {
+          type:'amqp',
+          pin:'role:user',
+          port: 5672,
+          username: 'guest',
+          password: 'guest',
+          url: 'amqp://rabbitmq',
+         } )

@@ -10,7 +10,12 @@ services:
      - ./app:/usr/src/app
     networks:
      - mongo_gabriela
+     - rabbitmq_gama
+
 networks:
   mongo_gabriela:
     external:
       name: my_network
+  rabbitmq_gama:
+    external:
+      name: my_network_gama

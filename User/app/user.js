@@ -1,6 +1,25 @@
-module.exports = function User(options) {
+const RABBITMQ_ERLANG_COOKIE='secret cookie here'
 
-  this.add('role:user, cmd:create', function create( msg, respond ) {
+
+require('seneca')()
+ .use("entity")
+ .use('mongo-store',{
+    name:'dataBaseUsers',
+    host:'mongo',
+    port:27017
+  })
+
+ .use('seneca-amqp-transport')
+ .listen({
+    type:'amqp',
+    pin:'role:user',
+    port: 5672,
+    username: 'guest',
+    password: 'guest',
+    url: 'amqp://rabbitmq',
+})
+
+    .add('role:user, cmd:create', function create( msg, respond ) {
 
       var user = this.make('users')
 
@@ -15,18 +34,18 @@ module.exports = function User(options) {
         console.log(user)
         respond( null, user)
     })
-});
+})
 
-this.add('role:user, cmd:listById', function listById (msg, respond){
+  .add('role:user, cmd:listById', function listById (msg, respond){
 
       var userId = msg.id;
       var user = this.make('users')
 	     user.load$(userId, function(error, user) {
 		       respond(null, user);
 	});
-});
+})
 
-this.add('role:user, cmd:listUser', function listUser(msg, respond){
+  .add('role:user, cmd:listUser', function listUser(msg, respond){
 
     var user = this.make('users');
     user.list$( { all$: true } , function(error, user){
@@ -34,9 +53,9 @@ this.add('role:user, cmd:listUser', function listUser(msg, respond){
     });
 
 
-});
+})
 
-this.add('role:user, cmd:editUser', function(msg, respond){
+  .add('role:user, cmd:editUser', function(msg, respond){
 
   var userId = msg.id;
   var user = this.make('users')
@@ -54,10 +73,5 @@ this.add('role:user, cmd:editUser', function(msg, respond){
       console.log(user)
       respond( null, user)
     });
-});
-
-
-
+  });
 })
-
-}
