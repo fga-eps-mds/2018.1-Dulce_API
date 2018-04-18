@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+    expose:
+      - "5672"
+    networks:
+      - gama
+networks:
+  gama:
+    name: my_network_gama

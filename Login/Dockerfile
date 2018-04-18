@@ -10,5 +10,4 @@ RUN npm install -g
 EXPOSE 8080
 EXPOSE 5858
 
-
-CMD ["npm", "start"]
+CMD ["npm", "start"]  
