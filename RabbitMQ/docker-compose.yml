@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   rabbitmq:
-    image: rabbitmq
+    image: rabbitmq:latest
     ports:
       - "5672:5672"
     expose:
