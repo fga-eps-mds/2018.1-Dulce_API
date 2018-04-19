@@ -9,6 +9,32 @@ O conceito principal dentro do microsserviços é estabelecer pequenos serviços
 
 ## Instalação e uso
 
+#### Instalação do Docker
+
+***DOCKER - na pasta do projeto***
+
+    sudo apt-get update
+
+    sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+    sudo apt-key fingerprint 0EBFCD88
+
+    sudo add-apt-repository \
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable"
+
+    sudo apt-get update
+
+    sudo apt-get install docker-ce
+
+
 Para utilizar as API disponíveis e customizá-las para se adequar ao seu sistema, basta seguir os seguintes passos :
 
 Clone o repositório utilizando o comando (o símbolo "$" não deve ser copiado. Apenas indica que tal comando
@@ -18,17 +44,22 @@ deve ser digitado em seu terminal) :
 
 Entre no diretório em que há o arquivo Dockerfile. Se você estiver utilizando o terminal linux, basta digitar :
 
-    $ cd 2018.1-Dulce_API;cd DataBase
+    $ cd 2018.1-Dulce_API/DataBase
 
-Observe que há um arquivo Dockerfile neste diretório. Agora basta digitar o seguinte comando :
+Observe que há um arquivo Dockerfile neste diretório. Agora basta digitar os seguintes comandos :
 
     $ sudo docker-compose up --build
+
+Após executar o docker, abra uma nova aba no terminal e digite os seguintes comandos:
+
+     $ cd RabbitMQ
+     $ sudo docker-compose up --build
 
 Em seguida, partindo da raiz do diretório para cadastrar usuários e outras funcionalidades relacionadas
 
     $ cd User
 
-Para executar o arquivo Dockerfile de User:
+Para executar o arquivo Dockerfile de User abra uma nova aba no terminal e digite:
 
     $ sudo docker-compose up --build
 
@@ -36,7 +67,7 @@ Já para o login, após o funcionamento do Dockerfile de DataBase:
 
     $ cd Login
 
-E execute o Dockerfile contido nele :
+E execute o Dockerfile contido nele abra uma nova aba no terminal e digite:
 
     $ sudo docker-compose up --build
 
