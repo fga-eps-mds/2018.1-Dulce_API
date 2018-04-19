@@ -1,15 +1,23 @@
 version: "3.5"
 services:
-  usersmicroservice:
-    build: .
-    command:  bash -c "npm install; nodemon app.js --color=always"
+  userserver:
+    build: ./Server
+    command:  bash -c "npm install; nodemon user.js --color=always"
     ports:
      - "8080:8080"
-     - "5858:5858"
     volumes:
-     - ./app:/usr/src/app
+     - ./Server:/usr/src/app
     networks:
      - mongo_gabriela
+     - rabbitmq_gama
+
+  userclient:
+    build: ./Client
+    command:  bash -c "npm install; nodemon client_user.js --color=always"
+    ports:
+     - "8083:8080"
+    volumes:
+     - ./Client:/usr/src/app
     networks:
      - mongo_gabriela
      - rabbitmq_gama

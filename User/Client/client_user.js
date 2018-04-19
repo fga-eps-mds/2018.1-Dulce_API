@@ -18,12 +18,13 @@ var senecaWebConfig = {
 var seneca = require('seneca')()
       .use(SenecaWeb, senecaWebConfig )
       .use('seneca-amqp-transport')
+      .use("entity")
       .use('api')
       .client( {
           type:'amqp',
-          pin:'role:login',
+          pin:'role:user',
           port: 5672,
           username: 'guest',
           password: 'guest',
-          url: 'amqp://rabbit',
-       } )
+          url: 'amqp://rabbitmq',
+         } )

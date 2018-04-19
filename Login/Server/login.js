@@ -4,12 +4,13 @@ const jwt = require('jsonwebtoken');
 const SECRET_KEY = '123456789';
 const expiresIn = '1h';
 
-require('seneca')().use('mongo-store',{
+require('seneca')()
+.use("entity")
+.use('mongo-store',{
     name:'dataBaseUsers',
     host:'mongo',
     port:27017
   })
- .use("entity")
  .use('seneca-amqp-transport')
  .listen({
     type:'amqp',
@@ -17,7 +18,7 @@ require('seneca')().use('mongo-store',{
     port: 5672,
     username: 'guest',
     password: 'guest',
-    url: 'amqp://rabbit',
+    url: 'amqp://rabbitmq',
 })
 
   .add('role:login, cmd:authenticate', function(msg, respond) {

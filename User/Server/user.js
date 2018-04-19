@@ -1,6 +1,3 @@
-const RABBITMQ_ERLANG_COOKIE='secret cookie here'
-
-
 require('seneca')()
  .use("entity")
  .use('mongo-store',{
@@ -8,7 +5,6 @@ require('seneca')()
     host:'mongo',
     port:27017
   })
-
  .use('seneca-amqp-transport')
  .listen({
     type:'amqp',
@@ -18,7 +14,6 @@ require('seneca')()
     password: 'guest',
     url: 'amqp://rabbitmq',
 })
-
     .add('role:user, cmd:create', function create( msg, respond ) {
 
       var user = this.make('users')

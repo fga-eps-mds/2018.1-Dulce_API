@@ -1,13 +1,22 @@
 version: "3.5"
 services:
-  loginmicroservice:
-    build: .
-    command:  bash -c "npm install; nodemon app.js --color=always"
+  loginserver:
+    build: ./Server
+    command:  bash -c "npm install; nodemon login.js --color=always"
     ports:
-     - "8083:8080"
-     - "5859:5858"
+     - "8085:8080"
     volumes:
-     - ./app:/usr/src/app
+     - ./Server:/usr/src/app
+    networks:
+     - mongo_gabriela
+     - rabbitmq_gama
+  loginclient:
+    build: ./Client
+    command:  bash -c "npm install; nodemon client_login.js --color=always"
+    ports:
+     - "8086:8080"
+    volumes:
+     - ./Client:/usr/src/app
     networks:
      - mongo_gabriela
      - rabbitmq_gama
