@@ -2,9 +2,9 @@
   "name": "node-app",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "client_hospital.js",
   "scripts": {
-    "start": "nodemon hospital.js"
+    "start": "nodemon client_hospital.js"
   },
   "author": "",
   "license": "MIT",
