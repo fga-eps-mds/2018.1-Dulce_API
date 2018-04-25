@@ -16,14 +16,32 @@ require('seneca')()
 })
 
   .add('role:sector,cmd:create', function create (msg,respond) {
-    var sector = this.make('sectors')
+    var token = msg.args.headers['x-access-token']
 
-    sector.name = msg.name
+    if (token) {
+      // verifies secret and checks exp
+      jwt.verify(token, SECRET_KEY, function(err, decoded) {
+        if (err) {
+          return respond(null,{ success: false, message: 'Failed to authenticate token.' });
+        } else {
+         // if everything is good, save to request for use in other routes
+           var sector = this.make('sectors')
+           sector.name = msg.name
+           sector.save$(function(err,sector){
+             console.log(sector)
+             respond(null,sector)
+           })
+       }
+     });
 
-    sector.save$(function(err,sector){
-      console.log(sector)
-      respond(null,sector)
-    })
+   } else {
+       // if there is no token
+       // return an error
+       return respond(null,{
+           success: false,
+           message: 'No token provided.'
+       });
+   }
   })
 
   .add('role:sector, cmd:listSector', function listSector(msg, respond){
