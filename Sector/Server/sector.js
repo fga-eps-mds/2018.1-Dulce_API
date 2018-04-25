@@ -26,8 +26,8 @@ require('seneca')()
     })
   })
 
-  .add('role:sector, cmd:listSector', function listSector(msg, respond{
-    var sector = this.make('sector');
+  .add('role:sector, cmd:listSector', function listSector(msg, respond){
+    var sector = this.make('sectors');
     sector.list$({all$:true}, function(error,sector){
       respond(null,sector);
     });

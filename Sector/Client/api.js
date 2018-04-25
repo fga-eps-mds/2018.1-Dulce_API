@@ -1,7 +1,7 @@
 module.exports = function api(options){
 
   this.add('role:api,path:create', function(msg,respond){
-    
+
     var name = msg.args.body.name
     var id = msg.args.query.id
 
@@ -9,7 +9,7 @@ module.exports = function api(options){
       name:name,
       id:id
     }, respond)
-  });
+  })
 
   this.add('role:api,path:listSector', function(msg,respond) {
     this.act('role:sector, cmd:listSector',{
