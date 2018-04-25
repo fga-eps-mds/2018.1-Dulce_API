@@ -36,7 +36,7 @@ require('seneca')()
       var userId = msg.id;
       var user = this.make('users')
 	     user.load$(userId, function(error, user) {
-		       respond(null, user);
+		      respond(null, user);
 	});
 })
 

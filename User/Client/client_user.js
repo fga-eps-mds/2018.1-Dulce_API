@@ -13,20 +13,28 @@ var jwtOptions = {}
 jwtOptions.jwtFromRequest = PassportJwt.ExtractJwt.fromAuthHeaderAsBearerToken()
 jwtOptions.secretOrKey = '123456789'
 
-var strategy = new JwtStrategy(jwtOptions, function(payload, next) {
-    console.log('payload received', payload)
-    if (next){
-        console.log(next);
-    }
-  })
+var strategy = new JwtStrategy(jwtOptions, async function(payload, next) {
+      console.log('payload received', payload)
+      console.log(next)
+      var userId = payload.id
+      var user = await getUser(userId, next);
+})
 
 Passport.use(strategy)
 
+Passport.serializeUser((user, cb) => {
+      cb(null, user)
+  })
+   
+  Passport.deserializeUser((user, cb) => {
+      cb(null, user)
+  })
+
+
 var app = express()
       .use( require('body-parser').json() )
-      .use( context )
       .use(Passport.initialize())
-      .listen(8080)
+      .use( context )
 
 var senecaWebConfig = {
       context: context,
@@ -48,3 +56,22 @@ var seneca = require('seneca')()
           password: 'guest',
           url: 'amqp://rabbitmq',
          } )
+      .ready(() => {
+            console.log('here eye am')
+            app.listen(8080)
+      })
+
+async function getUser(id, next) {
+      await seneca.act('role:user, cmd:listById', {id: id}, (err, result) => {
+            console.log(result)
+            if (err) {
+                  next('isso é o erro'+err)
+              }
+              else if (!result) {
+                  next(null, false)
+              }
+              else {
+                  next(null, result)
+              }
+      })
+}      
