@@ -67,7 +67,12 @@ this.add('role:api,path:editUser', function(msg, respond){
       map: {
         create: { POST:true },
         listById: { GET:true },
-        listUser: { GET: true},
+        listUser: { GET: true,
+                    auth: {
+                      strategy: 'jwt',
+                      fail: '/',
+                    }
+                  },
         editUser: { GET:true, POST: true}
       }
     }}, respond)
