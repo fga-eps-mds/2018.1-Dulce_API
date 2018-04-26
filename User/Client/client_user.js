@@ -16,8 +16,7 @@ jwtOptions.secretOrKey = '123456789'
 var strategy = new JwtStrategy(jwtOptions, async function(payload, next) {
       console.log('payload received', payload)
       console.log(next)
-      var userId = payload.id
-      var user = await getUser(userId, next);
+      next(null, payload)
 })
 
 Passport.use(strategy)
@@ -25,7 +24,7 @@ Passport.use(strategy)
 Passport.serializeUser((user, cb) => {
       cb(null, user)
   })
-   
+
   Passport.deserializeUser((user, cb) => {
       cb(null, user)
   })
@@ -60,18 +59,3 @@ var seneca = require('seneca')()
             console.log('here eye am')
             app.listen(8080)
       })
-
-async function getUser(id, next) {
-      await seneca.act('role:user, cmd:listById', {id: id}, (err, result) => {
-            console.log(result)
-            if (err) {
-                  next('isso é o erro'+err)
-              }
-              else if (!result) {
-                  next(null, false)
-              }
-              else {
-                  next(null, result)
-              }
-      })
-}      

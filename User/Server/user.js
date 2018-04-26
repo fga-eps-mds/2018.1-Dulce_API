@@ -50,6 +50,10 @@ require('seneca')()
 
 })
 
+.add('role:user, cmd:error', function error(msg, respond){
+    respond(null, {success:false, message: 'acesso negado'});
+  })
+
   .add('role:user, cmd:editUser', function(msg, respond){
 
   var userId = msg.id;
