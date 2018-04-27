@@ -4,7 +4,7 @@ var mongo = require('mongoose');
 var should = require('should');
 
 describe('Routing', function() {
-  const url = 'http://localhost:8084';
+  const url = 'http://localhost:8089';
   /*
   describe('should test new sector creation', () => {
     it('should create a new sector',(done) => {
