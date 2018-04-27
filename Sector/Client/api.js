@@ -16,13 +16,27 @@ module.exports = function api(options){
     },respond)
   });
 
+  this.add('role:api,path:error', function(msg, respond){
+    this.act('role:sector, cmd:error',{}, respond)
+  });
+
+
   this.add('init:api', function (msg,respond){
     this.act('role:web',{routes: {
       prefix: '/api/sector',
       pin:    'role:api,path:*',
       map: {
-        create: { POST:true},
-        listSector: { GET:true}
+        create: { POST:true,
+                    auth: {
+                      strategy: 'jwt',
+                      fail: '/api/sector/error',
+                    }},
+        listSector: { GET:true,
+                    auth: {
+                      strategy: 'jwt',
+                      fail: '/api/sector/error',
+                    }},
+        error: {GET:true}
       }
     }}, respond)
   });

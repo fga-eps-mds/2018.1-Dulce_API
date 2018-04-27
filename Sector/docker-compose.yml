@@ -4,7 +4,7 @@ services:
     build: ./Server
     command:  bash -c "npm install; nodemon sector.js --color=always"
     ports:
-     - "8080:8080"
+     - "8087:8080"
     volumes:
      - ./Server:/usr/src/app
     networks:
@@ -15,7 +15,7 @@ services:
     build: ./Client
     command:  bash -c "npm install; nodemon client_sector.js --color=always"
     ports:
-     - "8083:8080"
+     - "8084:8080"
     volumes:
      - ./Client:/usr/src/app
     networks:
