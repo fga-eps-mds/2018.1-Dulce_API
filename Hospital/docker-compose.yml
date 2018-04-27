@@ -4,18 +4,18 @@ services:
     build: ./Server
     command:  bash -c "npm install; nodemon hospital.js --color=always"
     ports:
-     - "8080:8080"
+     - "8088:8080"
     volumes:
      - ./Server:/usr/src/app
     networks:
      - mongo_gabriela
      - rabbitmq_gama
 
-  sectorclient:
+  hospitalclient:
     build: ./Client
     command:  bash -c "npm install; nodemon client_hospital.js --color=always"
     ports:
-     - "8083:8080"
+     - "8089:8080"
     volumes:
      - ./Client:/usr/src/app
     networks:
