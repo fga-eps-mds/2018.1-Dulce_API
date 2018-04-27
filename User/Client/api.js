@@ -70,14 +70,24 @@ this.add('role:api,path:editUser', function(msg, respond){
       pin:    'role:api,path:*',
       map: {
         create: { POST:true },
-        listById: { GET:true},
+        listById: { GET:true,
+                    auth: {
+                      strategy: 'jwt',
+                      fail: '/api/userManager/error',
+                    }
+        },
         listUser: { GET: true,
                     auth: {
                       strategy: 'jwt',
                       fail: '/api/userManager/error',
                     }
         },
-        editUser: { GET:true, POST: true},
+        editUser: { PUT: true,
+                    auth: {
+                      strategy: 'jwt',
+                      fail: '/api/userManager/error',
+                    }
+        },
         error: {GET:true}
       }
     }}, respond)
