@@ -77,7 +77,7 @@ describe('should test the token validation', () => {
 describe('/POST Register', () => {
   it('it should Register, Login, and check token', () => {
     let login_details = {
-      'registration': 'bosta',
+      'registration': '54321',
       'password': '1234'
     }
 
