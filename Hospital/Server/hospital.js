@@ -19,7 +19,6 @@ require('seneca')()
     var hospital = this.make('hospitals')
     hospital.name = msg.name
     hospital.save$(function(err,hospital){
-      console.log(hospital)
       respond(null,hospital)
     })
   })

@@ -26,7 +26,6 @@ require('seneca')()
       user.manager = msg.manager
 
       user.save$(function(err,user){
-        console.log(user)
         respond( null, user)
     })
 })
@@ -65,7 +64,6 @@ require('seneca')()
     user.manager = msg.manager
 
     user.save$(function(err,user){
-      console.log(user)
       respond( null, user)
     });
   });
