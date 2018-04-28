@@ -19,7 +19,6 @@ require('seneca')()
     var sector = this.make('sectors')
     sector.name = msg.name
     sector.save$(function(err,sector){
-      console.log(sector)
       respond(null,sector)
     })
   })

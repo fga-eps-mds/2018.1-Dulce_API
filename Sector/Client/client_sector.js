@@ -14,8 +14,6 @@ jwtOptions.jwtFromRequest = PassportJwt.ExtractJwt.fromAuthHeaderAsBearerToken()
 jwtOptions.secretOrKey = '123456789'
 
 var strategy = new JwtStrategy(jwtOptions, async function(payload, next) {
-      console.log('payload received', payload)
-      console.log(next)
       next(null, payload)
 })
 
@@ -56,6 +54,5 @@ var seneca = require('seneca')()
           url: 'amqp://rabbitmq',
          } )
       .ready(() => {
-            console.log('here eye am')
             app.listen(8080)
       })
