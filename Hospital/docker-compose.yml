@@ -1,0 +1,31 @@
+version: "3.5"
+services:
+  hospitalserver:
+    build: ./Server
+    command:  bash -c "npm install; nodemon hospital.js --color=always"
+    ports:
+     - "8088:8080"
+    volumes:
+     - ./Server:/usr/src/app
+    networks:
+     - mongo_gabriela
+     - rabbitmq_gama
+
+  hospitalclient:
+    build: ./Client
+    command:  bash -c "npm install; nodemon client_hospital.js --color=always"
+    ports:
+     - "8089:8080"
+    volumes:
+     - ./Client:/usr/src/app
+    networks:
+     - mongo_gabriela
+     - rabbitmq_gama
+
+networks:
+  mongo_gabriela:
+    external:
+      name: my_network
+  rabbitmq_gama:
+    external:
+      name: my_network_gama
