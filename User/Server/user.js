@@ -35,7 +35,7 @@ require('seneca')()
       var userId = msg.id;
       var user = this.make('users')
 	     user.load$(userId, function(error, user) {
-		       respond(null, user);
+		      respond(null, user);
 	});
 })
 
@@ -48,6 +48,10 @@ require('seneca')()
 
 
 })
+
+.add('role:user, cmd:error', function error(msg, respond){
+    respond(null, {success:false, message: 'acesso negado'});
+  })
 
   .add('role:user, cmd:editUser', function(msg, respond){
 
