@@ -1,7 +1,7 @@
 require('seneca')()
  .use("entity")
  .use('mongo-store',{
-    name:'dataBaseSectors',
+    name:'dataBaseHospitals',
     host:'mongo',
     port:27017
   })
