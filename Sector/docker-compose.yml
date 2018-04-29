@@ -1,0 +1,31 @@
+version: "3.5"
+services:
+  sectorserver:
+    build: ./Server
+    command:  bash -c "npm install; nodemon sector.js --color=always"
+    ports:
+     - "8087:8080"
+    volumes:
+     - ./Server:/usr/src/app
+    networks:
+     - mongo_gabriela
+     - rabbitmq_gama
+
+  sectorclient:
+    build: ./Client
+    command:  bash -c "npm install; nodemon client_sector.js --color=always"
+    ports:
+     - "8084:8080"
+    volumes:
+     - ./Client:/usr/src/app
+    networks:
+     - mongo_gabriela
+     - rabbitmq_gama
+
+networks:
+  mongo_gabriela:
+    external:
+      name: my_network
+  rabbitmq_gama:
+    external:
+      name: my_network_gama
