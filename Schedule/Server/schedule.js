@@ -17,7 +17,14 @@ require('seneca')()
 
   .add('role:schedule,cmd:create', function create (msg,respond) {
     var schedule = this.make('schedule')
-    schedule.name = msg.name
+    schedule.date = msg.date
+    schedule.start_time = msg.start_time
+    schedule.end_time = msg.end_time
+    schedule.sector = msg.sector
+    schedule.employee = msg.employee
+    schedule.specialty = msg.specialty
+    schedule.amount_of_hours = msg.amount_of_hours
+
     schedule.save$(function(err,schedule){
       respond(null,schedule)
     })
