@@ -11,16 +11,28 @@ module.exports = function api(options){
     var amount_of_hours = msg.args.body.amount_of_hours
     var id = msg.args.query.id
 
-    this.act('role:schedule,cmd:create',{
-      date:date,
-      start_time:start_time,
-      end_time:end_time,
-      sector:sector,
-      employee:employee,
-      specialty:specialty,
-      amount_of_hours:amount_of_hours,
-      id:id
-    }, respond)
+    if(Date.parse(start_time) > Date.parse(end_time)){
+      this.act('role:schedule,cmd:create',{
+      }, respond(null, {success:false, message: 'Horários de Inicio e Fim estão em comflito'}))
+    }else if(sector == null || (sector.length < 1)){
+      this.act('role:schedule,cmd:create',{
+      }, respond(null, {success:false, message: 'Setor não pode ser vazio'}))
+    }else if(employee == null || (employee.length < 1)){
+      this.act('role:schedule,cmd:create',{
+      }, respond(null, {success:false, message: 'Plantonista não pode ser vazio'}))
+
+    }else{
+      this.act('role:schedule,cmd:create',{
+        date:date,
+        start_time:start_time,
+        end_time:end_time,
+        sector:sector,
+        employee:employee,
+        specialty:specialty,
+        amount_of_hours:amount_of_hours,
+        id:id
+      }, respond)
+    }
   })
 
   this.add('role:api,path:error', function(msg, respond){
