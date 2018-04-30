@@ -264,11 +264,23 @@ module.exports = function api(options){
 
   this.add('role:api,path:create', function(msg,respond){
 
-    var name = msg.args.body.name
+    var date = msg.args.body.date
+    var start_time = msg.args.body.start_time
+    var end_time = msg.args.body.end_time
+    var sector = msg.args.body.sector
+    var employee = msg.args.body.employee
+    var specialty = msg.args.body.specialty
+    var amount_of_hours = msg.args.body.amount_of_hours
     var id = msg.args.query.id
 
     this.act('role:schedule,cmd:create',{
-      name:name,
+      date:date,
+      start_time:start_time,
+      end_time:end_time,
+      sector:sector,
+      employee:employee,
+      specialty:specialty,
+      amount_of_hours:amount_of_hours,
       id:id
     }, respond)
   })
