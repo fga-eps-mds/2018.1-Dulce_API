@@ -1,0 +1,36 @@
+sudo: true
+language: node_js
+node_js:
+  - "8"
+cache:
+  directories:
+    - "node_modules"
+script:
+  - npm install -g
+  - npm run lint
+matrix:
+  include:
+    - language: node_js
+      os: linux
+      sudo: required
+      install:
+        - sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D > /dev/null
+        - sudo apt-add-repository 'deb https://apt.dockerproject.org/repo ubuntu-xenial main' > /dev/null
+        - sudo apt-get -qq update > /dev/null
+        - apt-cache policy docker-engine > /dev/null
+        - apt-get -qq -y install docker-engine > /dev/null
+        - curl -L https://github.com/docker/compose/releases/download/1.20.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose > /dev/null
+        - chmod +x /usr/local/bin/docker-compose
+      before_script:
+        - cd $TRAVIS_BUILD_DIR/Dadabase
+        - sudo docker-compose up&
+        - cd $TRAVIS_BUILD_DIR/RabbitMQ
+        - sudo docker-compose up&
+        - cd $TRAVIS_BUILD_DIR/User
+        - sudo docker-compose up&
+        - cd $TRAVIS_BUILD_DIR/Login
+        - sudo docker-compose up&
+        - cd $TRAVIS_BUILD_DIR
+      script:
+        - sudo docker run dulce_login npm run test
+        - sudo docker run dulce_user npm run test
