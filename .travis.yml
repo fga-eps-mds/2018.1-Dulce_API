@@ -19,22 +19,17 @@ matrix:
       before_script:
 
         - cd $TRAVIS_BUILD_DIR/Database
-        - sudo docker-compose up --build -d&
-        - docker wait database_mongo_1
+        - sudo docker-compose up --build -d
         - cd $TRAVIS_BUILD_DIR/RabbitMQ
-        - sudo docker-compose up --build -d&
-        - docker wait rabbitmq_rabbitmq_1
+        - sudo docker-compose up --build -d
         - cd $TRAVIS_BUILD_DIR/User
-        - sudo docker-compose up --build -d&
-        - docker wait user_userclient_1
-        - docker wait user_userserver_1
+        - sudo docker-compose up --build -d
         - cd $TRAVIS_BUILD_DIR/Login
-        - sudo docker-compose up --build -d&
-        - docker wait login_loginserver_1
+        - sudo docker-compose up --build -d
         - cd $TRAVIS_BUILD_DIR
 
       env:
-        - DOCKER_COMPOSE_VERSION=1.4.2
+        - DOCKER_COMPOSE_VERSION=1.20.1
 
       before_install:
         - sudo rm /usr/local/bin/docker-compose
@@ -43,4 +38,5 @@ matrix:
         - sudo mv docker-compose /usr/local/bin
 
       script:
+        - cd $TRAVIS_BUILD_DIR/Login
         - sudo docker-compose exec loginserver npm run test
