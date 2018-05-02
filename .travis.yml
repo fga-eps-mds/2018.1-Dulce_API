@@ -19,12 +19,16 @@ matrix:
       before_script:
         - cd $TRAVIS_BUILD_DIR/Database
         - sudo docker-compose up&
+        - docker wait Database
         - cd $TRAVIS_BUILD_DIR/RabbitMQ
         - sudo docker-compose up&
+        - docker wait RabbitMQ
         - cd $TRAVIS_BUILD_DIR/User
         - sudo docker-compose up&
+        - docker wait User
         - cd $TRAVIS_BUILD_DIR/Login
         - sudo docker-compose up&
+        - docker wait Login
         - cd $TRAVIS_BUILD_DIR
 
       env:
