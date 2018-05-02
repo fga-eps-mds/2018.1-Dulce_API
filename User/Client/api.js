@@ -32,8 +32,12 @@ module.exports = function api(options) {
   });
 
   this.add('role:api,path:listUser', function(msg, respond){
-    this.act('role:user, cmd:listUser',{
-    }, respond)
+    this.act('role:user, cmd:listUser',{}, respond)
+
+  });
+
+  this.add('role:api,path:error', function(msg, respond){
+    this.act('role:user, cmd:error',{}, respond)
 
   });
 
@@ -66,9 +70,25 @@ this.add('role:api,path:editUser', function(msg, respond){
       pin:    'role:api,path:*',
       map: {
         create: { POST:true },
-        listById: { GET:true },
-        listUser: { GET: true},
-        editUser: { GET:true, POST: true}
+        listById: { GET:true,
+                    auth: {
+                      strategy: 'jwt',
+                      fail: '/api/userManager/error',
+                    }
+        },
+        listUser: { GET: true,
+                    auth: {
+                      strategy: 'jwt',
+                      fail: '/api/userManager/error',
+                    }
+        },
+        editUser: { PUT: true,
+                    auth: {
+                      strategy: 'jwt',
+                      fail: '/api/userManager/error',
+                    }
+        },
+        error: {GET:true}
       }
     }}, respond)
   });

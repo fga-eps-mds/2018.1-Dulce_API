@@ -34,8 +34,7 @@ require('seneca')()
              } else {
                 if(msg.password == user.password ){
                   var payload = {
-                    registration: msg.registration,
-                    password: msg.password
+                    id: user.id
                   }
                   var token = jwt.sign(payload, SECRET_KEY, {expiresIn});
                   respond(null,{

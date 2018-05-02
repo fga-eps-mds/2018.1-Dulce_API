@@ -1,3 +1,4 @@
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var SenecaWeb = require('seneca-web');
@@ -14,19 +15,17 @@ jwtOptions.jwtFromRequest = PassportJwt.ExtractJwt.fromAuthHeaderAsBearerToken()
 jwtOptions.secretOrKey = '123456789'
 
 var strategy = new JwtStrategy(jwtOptions, async function(payload, next) {
-      console.log('payload received', payload)
-      console.log(next)
       next(null, payload)
 })
 
 Passport.use(strategy)
 
-Passport.serializeUser((user, cb) => {
-      cb(null, user)
+Passport.serializeUser((hospital, cb) => {
+      cb(null, hospital)
   })
 
-  Passport.deserializeUser((user, cb) => {
-      cb(null, user)
+Passport.deserializeUser((hospital, cb) => {
+      cb(null, hospital)
   })
 
 
@@ -49,13 +48,12 @@ var seneca = require('seneca')()
       .use('api')
       .client( {
           type:'amqp',
-          pin:'role:user',
+          pin:'role:hospital',
           port: 5672,
           username: 'guest',
           password: 'guest',
           url: 'amqp://rabbitmq',
          } )
       .ready(() => {
-            console.log('here eye am')
             app.listen(8080)
       })
