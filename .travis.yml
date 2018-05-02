@@ -1,4 +1,4 @@
-sudo: true
+sudo: required
 language: node_js
 services:
   - docker
@@ -14,12 +14,10 @@ matrix:
   include:
     - language: node_js
       os: linux
-      sudo: required
       install:
-        - curl -L https://github.com/docker/compose/releases/download/1.20.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose > /dev/null
-        - chmod +x /usr/local/bin/docker-compose
+
       before_script:
-        - cd $TRAVIS_BUILD_DIR/Dadabase
+        - cd $TRAVIS_BUILD_DIR/Database
         - sudo docker-compose up&
         - cd $TRAVIS_BUILD_DIR/RabbitMQ
         - sudo docker-compose up&
@@ -28,6 +26,15 @@ matrix:
         - cd $TRAVIS_BUILD_DIR/Login
         - sudo docker-compose up&
         - cd $TRAVIS_BUILD_DIR
+
+      env:
+        - DOCKER_COMPOSE_VERSION=1.4.2
+
+      before_install:
+        - sudo rm /usr/local/bin/docker-compose
+        - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+        - chmod +x docker-compose
+        - sudo mv docker-compose /usr/local/bin
+
       script:
-        - sudo docker run dulce_login npm run test
-        - sudo docker run dulce_user npm run test
+        - sudo docker-compose exec loginserver npm run test
