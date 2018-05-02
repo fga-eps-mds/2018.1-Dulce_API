@@ -16,31 +16,6 @@ matrix:
       os: linux
       install:
 
-<<<<<<< HEAD
-      before_script:
-
-        - cd $TRAVIS_BUILD_DIR/Database
-        - sudo docker-compose up --build -d
-        - cd $TRAVIS_BUILD_DIR/RabbitMQ
-        - sudo docker-compose up --build -d
-        - cd $TRAVIS_BUILD_DIR/User
-        - sudo docker-compose up --build -d
-        - cd $TRAVIS_BUILD_DIR/Login
-        - sudo docker-compose up --build -d
-        - cd $TRAVIS_BUILD_DIR
-
-      env:
-        - DOCKER_COMPOSE_VERSION=1.20.1
-
-      before_install:
-        - sudo rm /usr/local/bin/docker-compose
-        - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-        - chmod +x docker-compose
-        - sudo mv docker-compose /usr/local/bin
-
-      script:
-        - cd $TRAVIS_BUILD_DIR/Login
-=======
       before_install:
         - sudo apt-get remove docker docker-engine docker.io
         - sudo apt-get update
@@ -65,8 +40,8 @@ matrix:
         - sudo docker-compose up --build -d&
 
       env:
-        - DOCKER_COMPOSE_VERSION=1.4.2
+        - DOCKER_COMPOSE_VERSION=1.21.0
 
       script:
->>>>>>> 696d8760a3f5df3b7e9a834557018de9f4e5fa43
-        - sudo docker-compose exec loginserver npm run test
+        - cd $TRAVIS_BUILD_DIR/Login
+        - sudo docker-compose run loginserver npm run test
