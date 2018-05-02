@@ -17,18 +17,20 @@ matrix:
       install:
 
       before_script:
+
         - cd $TRAVIS_BUILD_DIR/Database
-        - sudo docker-compose up&
-        - docker wait Database
+        - sudo docker-compose up --build -d&
+        - docker wait database_mongo_1
         - cd $TRAVIS_BUILD_DIR/RabbitMQ
-        - sudo docker-compose up&
-        - docker wait RabbitMQ
+        - sudo docker-compose up --build -d&
+        - docker wait rabbitmq_rabbitmq_1
         - cd $TRAVIS_BUILD_DIR/User
-        - sudo docker-compose up&
-        - docker wait User
+        - sudo docker-compose up --build -d&
+        - docker wait user_userclient_1
+        - docker wait user_userserver_1
         - cd $TRAVIS_BUILD_DIR/Login
-        - sudo docker-compose up&
-        - docker wait Login
+        - sudo docker-compose up --build -d&
+        - docker wait login_loginserver_1
         - cd $TRAVIS_BUILD_DIR
 
       env:
