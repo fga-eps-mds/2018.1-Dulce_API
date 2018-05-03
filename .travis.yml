@@ -1,0 +1,47 @@
+sudo: required
+language: node_js
+services:
+  - docker
+node_js:
+  - "8"
+cache:
+  directories:
+    - "node_modules"
+script:
+  - npm install -g
+  - npm run lint
+matrix:
+  include:
+    - language: node_js
+      os: linux
+      install:
+
+      before_install:
+        - sudo apt-get remove docker docker-engine docker.io
+        - sudo apt-get update
+        - sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        - sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        - sudo chmod +x /usr/local/bin/docker-compose
+        - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        - sudo apt-get update
+        - sudo apt-get install docker-ce
+        - docker-compose version
+        - docker version
+
+      before_script:
+        - cd $TRAVIS_BUILD_DIR/Database
+        - sudo docker-compose up --build -d&
+        - cd $TRAVIS_BUILD_DIR/RabbitMQ
+        - sudo docker-compose up --build -d&
+        - cd $TRAVIS_BUILD_DIR/User
+        - sudo docker-compose up --build -d&
+        - cd $TRAVIS_BUILD_DIR/Login
+        - sudo docker-compose up --build -d&
+
+      env:
+        - DOCKER_COMPOSE_VERSION=1.21.0
+
+      script:
+        - cd $TRAVIS_BUILD_DIR/Login
+        - sudo docker-compose run loginserver npm run test
