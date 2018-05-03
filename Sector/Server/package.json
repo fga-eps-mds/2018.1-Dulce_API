@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon sector.js"
+    "start": "nodemon sector.js",
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "",
   "license": "MIT",

@@ -5,7 +5,7 @@
   "main": "client_user.js",
   "scripts": {
     "start": "nodemon client_user.js",
-    "test": "mocha"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "",
   "license": "MIT",

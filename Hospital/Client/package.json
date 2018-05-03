@@ -5,7 +5,7 @@
   "main": "client_hospital.js",
   "scripts": {
     "start": "nodemon client_hospital.js",
-    "test": "mocha"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "",
   "license": "MIT",
