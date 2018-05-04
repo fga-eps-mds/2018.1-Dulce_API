@@ -31,8 +31,8 @@ seneca()
 
 .add('role:schedule,cmd:listWeek',  function (msg,respond){
 
+    var week = msg.week;
     var schedule = this.make('schedule');
-    schedule.week = msg.week;
     schedule.load$(week, function (error,schedule){
         respond(null,schedule);
         })
