@@ -1,0 +1,31 @@
+version: "3.5"
+services:
+  scheduleserver:
+    build: ./Server
+    command:  bash -c "npm install; nodemon schedule.js --color=always"
+    ports:
+     - "8090:8080"
+    volumes:
+     - ./Server:/usr/src/app
+    networks:
+     - mongo_gabriela
+     - rabbitmq_gama
+
+  scheduleclient:
+    build: ./Client
+    command:  bash -c "npm install; nodemon client_schedule.js --color=always"
+    ports:
+     - "8091:8080"
+    volumes:
+     - ./Client:/usr/src/app
+    networks:
+     - mongo_gabriela
+     - rabbitmq_gama
+
+networks:
+  mongo_gabriela:
+    external:
+      name: my_network
+  rabbitmq_gama:
+    external:
+      name: my_network_gama
