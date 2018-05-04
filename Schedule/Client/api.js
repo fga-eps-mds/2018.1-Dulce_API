@@ -8,8 +8,11 @@ module.exports = function api(options){
     var sector = msg.args.body.sector
     var employee = msg.args.body.employee
     var specialty = msg.args.body.specialty
-    var amount_of_hours = msg.args.body.amount_of_hours
     var id = msg.args.query.id
+
+    // The diference between times is given in milliseconds. We are expecting hours,
+    //so wu divide by 3600000.0 that is the number of milliseconds in 1 hour
+    var amount_of_hours = (Date.parse(end_time) - Date.parse(start_time))/3600000.0
 
     if(Date.parse(start_time) > Date.parse(end_time)){
       this.act('role:schedule,cmd:create',{
