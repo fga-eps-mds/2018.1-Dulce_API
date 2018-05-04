@@ -35,6 +35,13 @@ seneca()
     var schedule = this.make('schedule');
     schedule.load$(week, function (error,schedule){
         respond(null,schedule);
-        })
+      });
     })
 
+  .add('role:schedule, cmd:listSchedule', function (msg, respond){
+
+    var schedule = this.make('schedule');
+    schedule.list$( { all$: true } , function(error, schedule){
+        respond(null, schedule);
+      });
+  })
