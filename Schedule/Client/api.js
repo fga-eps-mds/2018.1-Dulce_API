@@ -20,6 +20,24 @@ module.exports = function api(options) {
         },respond)
     });
 
+    this.add('role:api,path:listMonth',function(msg,respond){
+        var month = msg.args.query.month;
+        this.act('role:schedule,cmd:listMonth',{
+            month: month
+        },respond)
+    });
+
+    this.add('role:api,path:listSchedule', function(msg, respond){
+              this.act('role:schedule, cmd:listSchedule',{}, respond)
+        
+            });
+    this.add('role:api,path:listYear',function(msg,respond){
+        var year = msg.args.query.year;
+        this.act('role:schedule,cmd:listYear',{
+            year:year
+        },respond)
+});
+
     this.add('init:api', function (msg, respond) {
         this.act('role:web', {
             routes: {
@@ -27,7 +45,10 @@ module.exports = function api(options) {
                 pin: 'role:api,path:*',
                 map: {
                     create: { POST: true },
-                    listWeek: {GET : true}
+                    listWeek: {GET : true},
+                    listSchedule: {GET : true},
+                    listMonth: {GET : true},
+                    listYear: {GET : true}
                 }
             }
         },respond)
