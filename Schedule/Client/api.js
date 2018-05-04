@@ -20,11 +20,6 @@ module.exports = function api(options) {
         },respond)
     });
 
-    this.add('role:api,path:listSchedule', function(msg, respond){
-      this.act('role:schedule, cmd:listSchedule',{}, respond)
-
-    });
-
     this.add('init:api', function (msg, respond) {
         this.act('role:web', {
             routes: {
@@ -32,12 +27,11 @@ module.exports = function api(options) {
                 pin: 'role:api,path:*',
                 map: {
                     create: { POST: true },
-                    listWeek: {GET : true},
-                    listSchedule: {GET: true}
+                    listWeek: {GET : true}
                 }
             }
         },respond)
-
+        
     })
 
 

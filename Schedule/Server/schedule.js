@@ -33,7 +33,7 @@ seneca()
 
     var week = msg.week;
     var schedule = this.make('schedule');
-    schedule.load$(week, function (error,schedule){
+    schedule.list$({week}, function (error,schedule){
         respond(null,schedule);
       });
     })
