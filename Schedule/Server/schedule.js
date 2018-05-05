@@ -1,3 +1,4 @@
+
 var seneca = require('seneca');
 var currentWeekNumber = require('current-week-number');
 
@@ -37,6 +38,15 @@ seneca()
         schedule.month = JSON.stringify(schedule.month);
         schedule.week = currentWeekNumber(date);
         schedule.week = JSON.stringify(schedule.week);
+        schedule.list$({ date: schedule.date, employee: schedule.employee }, function (err, list) {
+        list.forEach(function (time) {
+          if (Date.parse(schedule.start_time) >= Date.parse(time.start_time) && Date.parse(schedule.start_time) <= Date.parse(time.end_time)) {
+            respond(null, { success: false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado' })
+          } else if (Date.parse(schedule.end_time) >= Date.parse(time.start_time) && Date.parse(schedule.end_time) <= Date.parse(time.end_time)) {
+            respond(null, { success: false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado' })
+          } else if (Date.parse(schedule.start_time) <= Date.parse(time.start_time) && Date.parse(schedule.end_time) >= Date.parse(time.end_time)) {
+            respond(null, { success: false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado' })
+          }
         schedule.save$(function(err,schedule){
           respond(null,schedule)
         })
@@ -49,6 +59,7 @@ seneca()
             respond(null, schedule);
         });
     })
+  })
 
     .add('role:schedule,cmd:listDay', function (msg, respond) {
         var id = msg.id;
