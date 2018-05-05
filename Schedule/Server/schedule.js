@@ -30,7 +30,7 @@ seneca()
         schedule.amount_of_hours = msg.amount_of_hours
         schedule.year = date.getFullYear()
         schedule.year = JSON.stringify(schedule.year);
-        schedule.day = date.getDay()
+        schedule.day = date.getDate()
         schedule.day = JSON.stringify(schedule.day);
         schedule.month = date.getMonth()
         schedule.month = JSON.stringify(schedule.month);
