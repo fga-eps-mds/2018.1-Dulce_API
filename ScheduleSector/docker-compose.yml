@@ -1,0 +1,31 @@
+version: "3.5"
+services:
+  scheduleSectorserver:
+    build: ./Server
+    command:  bash -c "npm install; nodemon scheduleSector.js --color=always"
+    ports:
+     - "8092:8080"
+    volumes:
+     - ./Server:/usr/src/app
+    networks:
+     - mongo_gabriela
+     - rabbitmq_gama
+
+  scheduleSectorclient:
+    build: ./Client
+    command:  bash -c "npm install; nodemon client_scheduleSector.js --color=always"
+    ports:
+     - "8093:8080"
+    volumes:
+     - ./Client:/usr/src/app
+    networks:
+     - mongo_gabriela
+     - rabbitmq_gama
+
+networks:
+  mongo_gabriela:
+    external:
+      name: my_network
+  rabbitmq_gama:
+    external:
+      name: my_network_gama
