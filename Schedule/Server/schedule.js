@@ -18,17 +18,26 @@ seneca()
     })
 
 
-    .add('role:schedule,cmd:create', function (msg, respond) {
-        var schedule = this.make('schedule');
-        schedule.month = msg.month;
-        schedule.year = msg.year;
-        schedule.week = msg.week;
-        schedule.day = msg.day;
-        schedule.save$(function (err, schedule) {
-            respond(null, schedule)
+    .add('role:schedule,cmd:create', function create (msg,respond) {
+        var schedule = this.make('schedule')
+        var date = new Date(msg.date);
+        schedule.date = msg.date
+        schedule.start_time = msg.start_time
+        schedule.end_time = msg.end_time
+        schedule.sector = msg.sector
+        schedule.employee = msg.employee
+        schedule.specialty = msg.specialty
+        schedule.amount_of_hours = msg.amount_of_hours
+        schedule.year = date.getFullYear()
+        schedule.year = JSON.stringify(schedule.year);
+        schedule.day = date.getDay()
+        schedule.day = JSON.stringify(schedule.day);
+        schedule.month = date.getMonth()
+        schedule.month = JSON.stringify(schedule.month);
+        schedule.save$(function(err,schedule){
+          respond(null,schedule)
         })
-    })
-
+      })
     .add('role:schedule, cmd:listSchedule', function (msg, respond){
         
         var schedule = this.make('schedule');
@@ -37,11 +46,11 @@ seneca()
         });
     })
     
-    .add('role:schedule,cmd:listWeek', function (msg, respond) {
+    .add('role:schedule,cmd:listDay', function (msg, respond) {
 
-        var week = msg.week;
+        var day = msg.day;
         var schedule = this.make('schedule');
-        schedule.list$({ week }, function (error, schedule) {
+        schedule.list$({ day }, function (error, schedule) {
             respond(null, schedule);
         });
     })
@@ -55,6 +64,7 @@ seneca()
       })
     
       .add('role:schedule,cmd:listYear',function(msg,respond){
+    
         var year = msg.year;
         var schedule = this.make('schedule');
         schedule.list$({year},function(error,schedule){
