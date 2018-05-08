@@ -131,6 +131,17 @@ require('seneca')()
     schedule.specialty = msg.specialty
     schedule.amount_of_hours = msg.amount_of_hours
 
+    schedule.list$({date:schedule.date, employee:schedule.employee}, function(err,list){
+      list.forEach(function(time){
+          if (Date.parse(schedule.start_time) >= Date.parse(time.start_time) && Date.parse(schedule.start_time) <= Date.parse(time.end_time)) {
+            respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
+          }else if (Date.parse(schedule.end_time) >= Date.parse(time.start_time) && Date.parse(schedule.end_time) <= Date.parse(time.end_time)) {
+            respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
+          }else if(Date.parse(schedule.start_time) <= Date.parse(time.start_time) && Date.parse(schedule.end_time) >= Date.parse(time.end_time)){
+            respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
+          }
+      })
+    })
     schedule.save$(function(err,schedule){
       respond(null,schedule)
 >>>>>>> #30 Adicionando atributos corretos de acordo com a issue
