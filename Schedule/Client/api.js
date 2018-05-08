@@ -63,21 +63,31 @@ module.exports = function api(options) {
         }, respond)
     });
 
+    this.add('role:api,path:error', function(msg, respond){
+  this.act('role:schedule, cmd:error',{}, respond)
+});
+
+
+
     this.add('init:api', function (msg, respond) {
         this.act('role:web', {
             routes: {
                 prefix: '/api/schedule',
                 pin: 'role:api,path:*',
                 map: {
-                    create: { POST: true },
+                    create: { POST: true,
+                              auth:{
+                                strategy: 'jwt',
+                                fail: '/api/schedule/error',
+                              }},
                     listDay: { GET: true },
                     listSchedule: { GET: true },
                     listMonth: { GET: true },
-                    listYear: { GET: true }
+                    listYear: { GET: true },
+                    error: {GET: true }
                 }
             }
         }, respond)
-
     })
 
 

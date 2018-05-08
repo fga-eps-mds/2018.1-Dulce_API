@@ -39,13 +39,13 @@ seneca()
         })
       })
     .add('role:schedule, cmd:listSchedule', function (msg, respond){
-        
+
         var schedule = this.make('schedule');
         schedule.list$( { all$: true } , function(error, schedule){
             respond(null, schedule);
         });
     })
-    
+
     .add('role:schedule,cmd:listDay', function (msg, respond) {
 
         var day = msg.day;
@@ -62,12 +62,16 @@ seneca()
               respond(null, schedule);
           });
       })
-    
+
       .add('role:schedule,cmd:listYear',function(msg,respond){
-    
+
         var year = msg.year;
         var schedule = this.make('schedule');
         schedule.list$({year},function(error,schedule){
             respond(null,schedule);
         });
     })
+
+    .add('role:schedule, cmd:error', function error(msg, respond){
+    respond(null, {success:false, message: 'acesso negado'});
+  })
