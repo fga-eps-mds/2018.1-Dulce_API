@@ -75,11 +75,7 @@ module.exports = function api(options) {
                 prefix: '/api/schedule',
                 pin: 'role:api,path:*',
                 map: {
-                    create: { POST: true,
-                              auth:{
-                                strategy: 'jwt',
-                                fail: '/api/schedule/error',
-                              }},
+                    create: { POST: true},
                     listDay: { GET: true },
                     listSchedule: { GET: true },
                     listMonth: { GET: true },
