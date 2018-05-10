@@ -77,6 +77,15 @@ seneca()
         });
     })
 
+    .add('role:schedule,cmd:listWeek',function(msg,respond){
+        var id = msg.id;
+        var week = msg.week;
+        var schedule = this.make('schedule');
+        schedule.list$({week , id}, function(error,schedule){
+            respond(null,schedule);
+        });
+    })
+
     .add('role:schedule, cmd:error', function error(msg, respond){
     respond(null, {success:false, message: 'acesso negado'});
   })

@@ -69,6 +69,17 @@ module.exports = function api(options) {
         }, respond)
     });
 
+    this.add('role:api,path:listWeek', function (msg, respond) {
+        var week = msg.args.query.week;
+        var id =  msg.args.query.id;
+        console.log(week)
+        this.act('role:schedule,cmd:listWeek', {
+            week: week,
+            id: id
+        }, respond)
+    });
+    
+
     this.add('role:api,path:error', function(msg, respond){
   this.act('role:schedule, cmd:error',{}, respond)
 });
@@ -111,6 +122,12 @@ module.exports = function api(options) {
                          fail: '/api/schedule/error'
                        }
                      },
+                     listWeek: { GET: true,
+                   /*     auth: {
+                           strategy: 'jwt',
+                           fail: '/api/schedule/error'
+                        }*/
+                    },
                     error: {GET: true }
                 }
             }
