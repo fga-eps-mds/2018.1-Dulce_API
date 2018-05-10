@@ -44,33 +44,35 @@ seneca()
     .add('role:schedule, cmd:listSchedule', function (msg, respond){
 
         var schedule = this.make('schedule');
+        var id = msg.id;
         schedule.list$( { all$: true } , function(error, schedule){
             respond(null, schedule);
         });
     })
 
     .add('role:schedule,cmd:listDay', function (msg, respond) {
-
+        var id = msg.id;
         var day = msg.day;
         var schedule = this.make('schedule');
-        schedule.list$({ day }, function (error, schedule) {
+        schedule.list$({ day , id }, function (error, schedule) {
             respond(null, schedule);
         });
     })
 
     .add('role:schedule,cmd:listMonth', function (msg, respond) {
-          var month = msg.month;
+        var id = msg.id; 
+         var month = msg.month;
           var schedule = this.make('schedule');
-          schedule.list$({ month }, function (error, schedule) {
+          schedule.list$({ month , id }, function (error, schedule) {
               respond(null, schedule);
           });
       })
 
       .add('role:schedule,cmd:listYear',function(msg,respond){
-
+        var id = msg.id;
         var year = msg.year;
         var schedule = this.make('schedule');
-        schedule.list$({year},function(error,schedule){
+        schedule.list$({year , id},function(error,schedule){
             respond(null,schedule);
         });
     })

@@ -40,15 +40,19 @@ module.exports = function api(options) {
 
     this.add('role:api,path:listDay', function (msg, respond) {
         var day = msg.args.query.day;
+        var id = msg.args.query.id;
         this.act('role:schedule,cmd:listDay', {
-            day: day
+            day: day,
+            id: id
         }, respond)
     });
 
     this.add('role:api,path:listMonth', function (msg, respond) {
         var month = msg.args.query.month;
+        var id =  msg.args.query.id;
         this.act('role:schedule,cmd:listMonth', {
-            month: month
+            month: month,
+            id: id
         }, respond)
     });
 
@@ -58,8 +62,10 @@ module.exports = function api(options) {
     });
     this.add('role:api,path:listYear', function (msg, respond) {
         var year = msg.args.query.year;
+        var id =  msg.args.query.id;
         this.act('role:schedule,cmd:listYear', {
-            year: year
+            year: year,
+            id: id
         }, respond)
     });
 
@@ -76,10 +82,10 @@ module.exports = function api(options) {
                 pin: 'role:api,path:*',
                 map: {
                     create: { POST: true,
-                     auth: {
+                     /*auth: {
                         strategy: 'jwt',
                         fail: '/api/schedule/error'
-                      }
+                      }*/
                     },
                     listDay: { GET: true },
                     listSchedule: { GET: true },
