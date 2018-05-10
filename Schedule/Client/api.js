@@ -4,14 +4,13 @@ module.exports = function api(options){
 
   this.add('role:api,path:create', function(msg,respond){
 
-    var date = msg.args.body.date
+    var date = new Date(msg.args.body.date)
     var start_time = msg.args.body.start_time
     var end_time = msg.args.body.end_time
     var sector = msg.args.body.sector
     var employee = msg.args.body.employee
     var specialty = msg.args.body.specialty
     var id = msg.args.query.id
-    var month = Date.parse(date).getMonth();
 
     // The diference between times is given in milliseconds. We are expecting hours,
     //so wu divide by 3600000.0 that is the number of milliseconds in 1 hour
@@ -49,8 +48,10 @@ module.exports = function api(options){
     var minimum_hours_week = msg.args.body.minimum_hours_week
     var employee = msg.args.body.employee
     var schedule_list = []
+    
+    //Adicionar filtros para pegar as escalas do mes
 
-    var month = Date.parse(schedule).getMonth();
+    var month = schedule_list[0].date.getMonth() + 1
 
 
 });
