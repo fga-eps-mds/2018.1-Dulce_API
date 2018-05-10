@@ -82,15 +82,35 @@ module.exports = function api(options) {
                 pin: 'role:api,path:*',
                 map: {
                     create: { POST: true,
-                     /*auth: {
+                     auth: {
                         strategy: 'jwt',
                         fail: '/api/schedule/error'
-                      }*/
+                      }
                     },
-                    listDay: { GET: true },
-                    listSchedule: { GET: true },
-                    listMonth: { GET: true },
-                    listYear: { GET: true },
+                    listDay: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                    listSchedule: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                    listMonth: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                    listYear: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
                     error: {GET: true }
                 }
             }
