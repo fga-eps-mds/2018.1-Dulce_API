@@ -11,6 +11,7 @@ module.exports = function api(options){
     var employee = msg.args.body.employee
     var specialty = msg.args.body.specialty
     var id = msg.args.query.id
+    var month = Date.parse(date).getMonth();
 
     // The diference between times is given in milliseconds. We are expecting hours,
     //so wu divide by 3600000.0 that is the number of milliseconds in 1 hour
@@ -35,21 +36,24 @@ module.exports = function api(options){
         employee:employee,
         specialty:specialty,
         amount_of_hours:amount_of_hours,
-        id:id
+        id:id,
+        month:month
       }, respond)
     }
   })
 
-    this.add('role:api,path:createScale', function(msg, respond){
-      var maximum_hours_month = msg.args.body.maximum_hours_month
-      var maximum_hours_week = msg.args.body.maximum_hours_week
-      var minimum_hours_month = msg.args.body.minimum_hours_month
-      var minimum_hours_week = msg.args.body.minimum_hours_week
-      var employee = msg.args.body.employee
-      var schedule_list = []
+  this.add('role:api,path:createScale', function(msg, respond){
+    var maximum_hours_month = msg.args.body.maximum_hours_month
+    var maximum_hours_week = msg.args.body.maximum_hours_week
+    var minimum_hours_month = msg.args.body.minimum_hours_month
+    var minimum_hours_week = msg.args.body.minimum_hours_week
+    var employee = msg.args.body.employee
+    var schedule_list = []
+
+    var month = Date.parse(schedule).getMonth();
 
 
-    });
+});
 
     this.add('role:api,path:listDay', function (msg, respond) {
         var currentDate = new Date();
@@ -362,13 +366,4 @@ module.exports = function api(options){
             }
         }, respond)
     })
-
-
-
-
-
-
-
-
-
 }
