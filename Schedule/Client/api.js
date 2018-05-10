@@ -2,51 +2,53 @@ currentWeekNumber = require('current-week-number');
 
 module.exports = function api(options){
 
-    this.add('role:api,path:create', function (msg, respond) {
-        var time_init = new Date();
-        var time_final = new Date();
-        var date = msg.args.body.date
-        var start_time = msg.args.body.start_time
-        var end_time = msg.args.body.end_time
-        var sector = msg.args.body.sector
-        var employee = msg.args.body.employee
-        var specialty = msg.args.body.specialty
-        var id = msg.args.query.id
+  this.add('role:api,path:create', function(msg,respond){
 
-        time_init.setHours(parseInt(start_time, 10) - 1)
-        time_init.setMinutes(0)
-        time_init.setSeconds(0);
+    var date = msg.args.body.date
+    var start_time = msg.args.body.start_time
+    var end_time = msg.args.body.end_time
+    var sector = msg.args.body.sector
+    var employee = msg.args.body.employee
+    var specialty = msg.args.body.specialty
+    var id = msg.args.query.id
 
-        time_final.setHours(parseInt(end_time, 10) - 1)
-        time_final.setMinutes(0)
-        time_final.setSeconds(0);
+    // The diference between times is given in milliseconds. We are expecting hours,
+    //so wu divide by 3600000.0 that is the number of milliseconds in 1 hour
+    var amount_of_hours = (Date.parse(end_time) - Date.parse(start_time))/3600000.0
 
-        var amount_of_hours = (time_final.getHours() - time_init.getHours());
+    if(Date.parse(start_time) > Date.parse(end_time)){
+      this.act('role:schedule,cmd:create',{
+      }, respond(null, {success:false, message: 'Horários de Inicio e Fim estão em comflito'}))
+    }else if(sector == null || (sector.length < 1)){
+      this.act('role:schedule,cmd:create',{
+      }, respond(null, {success:false, message: 'Setor não pode ser vazio'}))
+    }else if(employee == null || (employee.length < 1)){
+      this.act('role:schedule,cmd:create',{
+      }, respond(null, {success:false, message: 'Plantonista não pode ser vazio'}))
 
-        var amount_of_hours = JSON.stringify(amount_of_hours);
+    }else{
+      this.act('role:schedule,cmd:create',{
+        date:date,
+        start_time:start_time,
+        end_time:end_time,
+        sector:sector,
+        employee:employee,
+        specialty:specialty,
+        amount_of_hours:amount_of_hours,
+        id:id
+      }, respond)
+    }
+  })
 
-        if (time_init > time_final) {
-            this.act('role:schedule,cmd:create', {
-            }, respond(null, { success: false, message: 'Horários de Inicio e Fim estão em comflito' }))
-        } else if (sector == null || (sector.length < 1)) {
-            this.act('role:schedule,cmd:create', {
-            }, respond(null, { success: false, message: 'Setor não pode ser vazio' }))
-        } else if (employee == null || (employee.length < 1)) {
-            this.act('role:schedule,cmd:create', {
-            }, respond(null, { success: false, message: 'Plantonista não pode ser vazio' }))
+    this.add('role:api,path:createScale', function(msg, respond){
+      var maximum_hours_month = msg.args.body.maximum_hours_month
+      var maximum_hours_week = msg.args.body.maximum_hours_week
+      var minimum_hours_month = msg.args.body.minimum_hours_month
+      var minimum_hours_week = msg.args.body.minimum_hours_week
+      var employee = msg.args.body.employee
+      var schedule_list = []
 
-        } else {
-            this.act('role:schedule,cmd:create', {
-                date: date,
-                start_time: start_time,
-                end_time: end_time,
-                sector: sector,
-                employee: employee,
-                specialty: specialty,
-                amount_of_hours: amount_of_hours,
-                id: id,
-            }, respond)
-        }
+
     });
 
     this.add('role:api,path:listDay', function (msg, respond) {
@@ -350,6 +352,11 @@ module.exports = function api(options){
                            fail: '/api/schedule/error'
                         }
                     },
+                    createScale: { POST:true,
+                                auth: {
+                                  strategy: 'jwt',
+                                  fail: '/api/schedule/error',
+                                }},
                     error: {GET: true }
                 }
             }

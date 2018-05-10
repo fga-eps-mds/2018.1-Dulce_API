@@ -19,37 +19,32 @@ seneca()
     })
 
 
-    .add('role:schedule,cmd:create', function create(msg, respond) {
-        var schedule = this.make('schedule')
-        var date = new Date(msg.date);
-        schedule.date = msg.date
-        schedule.start_time = msg.start_time
-        schedule.end_time = msg.end_time
-        schedule.sector = msg.sector
-        schedule.employee = msg.employee
-        schedule.specialty = msg.specialty
-        schedule.amount_of_hours = msg.amount_of_hours
-        schedule.year = date.getFullYear()
-        schedule.year = JSON.stringify(schedule.year);
-        schedule.day = date.getDate()
-        schedule.day = JSON.stringify(schedule.day);
-        schedule.month = date.getMonth() + 1
-        schedule.month = JSON.stringify(schedule.month);
-        schedule.week = currentWeekNumber(date);
-        schedule.week = JSON.stringify(schedule.week);
-        /*schedule.list$({ date: schedule.date, employee: schedule.employee }, function (err, list) {
-        list.forEach(function (time) {
-          if (Date.parse(schedule.start_time) >= Date.parse(time.start_time) && Date.parse(schedule.start_time) <= Date.parse(time.end_time)) {
-            respond(null, { success: false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado' })
-          } else if (Date.parse(schedule.end_time) >= Date.parse(time.start_time) && Date.parse(schedule.end_time) <= Date.parse(time.end_time)) {
-            respond(null, { success: false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado' })
-          } else if (Date.parse(schedule.start_time) <= Date.parse(time.start_time) && Date.parse(schedule.end_time) >= Date.parse(time.end_time)) {
-            respond(null, { success: false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado' })
-          })*/
-        schedule.save$(function (err, schedule) {
-            respond(null, schedule)
+    .add('role:schedule,cmd:create', function create (msg,respond) {
+      var schedule = this.make('schedule')
+      schedule.date = msg.date
+      schedule.start_time = msg.start_time
+      schedule.end_time = msg.end_time
+      schedule.sector = msg.sector
+      schedule.employee = msg.employee
+      schedule.specialty = msg.specialty
+      schedule.amount_of_hours = msg.amount_of_hours
+
+      schedule.list$({date:schedule.date, employee:schedule.employee}, function(err,list){
+        list.forEach(function(time){
+            if (Date.parse(schedule.start_time) >= Date.parse(time.start_time) && Date.parse(schedule.start_time) <= Date.parse(time.end_time)) {
+              respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
+            }else if (Date.parse(schedule.end_time) >= Date.parse(time.start_time) && Date.parse(schedule.end_time) <= Date.parse(time.end_time)) {
+              respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
+            }else if(Date.parse(schedule.start_time) <= Date.parse(time.start_time) && Date.parse(schedule.end_time) >= Date.parse(time.end_time)){
+              respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
+            }
         })
+      })
+      schedule.save$(function(err,schedule){
+        respond(null,schedule)
+      })
     })
+
 
     .add('role:schedule, cmd:listSchedule', function (msg, respond) {
 

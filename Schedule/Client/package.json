@@ -2,10 +2,10 @@
   "name": "node-app",
   "version": "1.0.0",
   "description": "",
-  "main": "client_sector.js",
+  "main": "client_schedule.js",
   "scripts": {
-    "start": "nodemon client_sector.js",
-    "test": "mocha"
+    "start": "nodemon client_schedule.js",
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "",
   "license": "MIT",
