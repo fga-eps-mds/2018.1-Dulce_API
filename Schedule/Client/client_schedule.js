@@ -30,15 +30,17 @@ Passport.deserializeUser((schedule, cb) => {
 })
 
 var app = express()
-    .use( bodyParser.json())
+    .use( require('body-parser').json() )
+    .use(Passport.initialize())
     .use( context )
 
 var senecaWebConfig = {
     context: context,
-    adapter: senecaWebAdapterExpress,
+    adapter: require('seneca-web-adapter-express'),
     options: {parseBody: false},
-   // auth: Passaport
+    auth: Passport
 }
+
     seneca.use(senecaWeb,senecaWebConfig)
     .use('seneca-amqp-transport')
     .use("entity")

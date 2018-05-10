@@ -1,4 +1,5 @@
 var seneca = require('seneca');
+var currentWeekNumber = require('current-week-number');
 
 seneca()
     .use('entity')
@@ -34,6 +35,8 @@ seneca()
         schedule.day = JSON.stringify(schedule.day);
         schedule.month = date.getMonth()
         schedule.month = JSON.stringify(schedule.month);
+        schedule.week = currentWeekNumber(date);
+        schedule.week = JSON.stringify(schedule.week);
         schedule.save$(function(err,schedule){
           respond(null,schedule)
         })
