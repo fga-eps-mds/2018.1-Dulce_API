@@ -33,7 +33,7 @@ seneca()
         schedule.year = JSON.stringify(schedule.year);
         schedule.day = date.getDate()
         schedule.day = JSON.stringify(schedule.day);
-        schedule.month = date.getMonth()
+        schedule.month = date.getMonth()+1
         schedule.month = JSON.stringify(schedule.month);
         schedule.week = currentWeekNumber(date);
         schedule.week = JSON.stringify(schedule.week);
@@ -80,9 +80,13 @@ seneca()
     .add('role:schedule,cmd:listWeek',function(msg,respond){
         var id = msg.id;
         var week = msg.week;
+        console.log(week , id);
+        console.log(id);
+        console.log(week);
         var schedule = this.make('schedule');
-        schedule.list$({week , id}, function(error,schedule){
+        schedule.list$({id , week}, function(error,schedule){
             respond(null,schedule);
+            console.log(schedule);
         });
     })
 

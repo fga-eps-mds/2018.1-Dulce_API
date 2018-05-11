@@ -1,4 +1,5 @@
 module.exports = function api(options) {
+    currentWeekNumber = require('current-week-number');
 
     this.add('role:api,path:create', function (msg, respond) {
 
@@ -65,14 +66,45 @@ module.exports = function api(options) {
         var id =  msg.args.query.id;
         this.act('role:schedule,cmd:listYear', {
             year: year,
-            id: id
+            id: id 
         }, respond)
     });
 
     this.add('role:api,path:listWeek', function (msg, respond) {
+        var currentDate = new Date();
+        var year = msg.args.query.year; 
+        var day = msg.args.query.day;    
+        var month = msg.args.query.month;
         var week = msg.args.query.week;
+        console.log(week);
+        if(year == undefined){
+            year = currentDate.getFullYear();
+        }else {
+            currentDate.setFullYear(year);
+        }
+        if(day == undefined){
+            day = currentDate.getDate() - 1;
+        }else {
+            currentDate.setDate(day);
+        }
+        if(month == undefined){
+            month = currentDate.getMonth() + 1;
+        }else{
+            currentDate.setMonth(month);
+        }
+        if(week == undefined){
+
+        var week = currentWeekNumber(currentDate);
+
+        week = JSON.stringify(week);
+            
+        }
+        
         var id =  msg.args.query.id;
-        console.log(week)
+        
+        console.log(id);
+        
+        
         this.act('role:schedule,cmd:listWeek', {
             week: week,
             id: id
@@ -93,11 +125,11 @@ module.exports = function api(options) {
                 pin: 'role:api,path:*',
                 map: {
                     create: { POST: true,
-                     auth: {
+                  /*   auth: {
                         strategy: 'jwt',
                         fail: '/api/schedule/error'
                       }
-                    },
+                    */ },
                     listDay: { GET: true,
                       auth: {
                          strategy: 'jwt',
