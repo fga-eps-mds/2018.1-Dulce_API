@@ -12,6 +12,9 @@ module.exports = function api(options){
     var specialty = msg.args.body.specialty
     var id = msg.args.query.id
 
+    var month = date.getMonth() + 1
+    var year = date.getYear() + 1900
+
     // The diference between times is given in milliseconds. We are expecting hours,
     //so wu divide by 3600000.0 that is the number of milliseconds in 1 hour
     var amount_of_hours = (Date.parse(end_time) - Date.parse(start_time))/3600000.0
@@ -36,7 +39,8 @@ module.exports = function api(options){
         specialty:specialty,
         amount_of_hours:amount_of_hours,
         id:id,
-        month:month
+        month:month,
+        year:year
       }, respond)
     }
   })
@@ -47,13 +51,23 @@ module.exports = function api(options){
     var minimum_hours_month = msg.args.body.minimum_hours_month
     var minimum_hours_week = msg.args.body.minimum_hours_week
     var employee = msg.args.body.employee
+    var month = msg.args.body.month
+    var year = msg.args.body.year
+    var id = msg.args.query.id
+    var amount_of_hours = 0
     var schedule_list = []
-    
-    //Adicionar filtros para pegar as escalas do mes
 
-    var month = schedule_list[0].date.getMonth() + 1
-
-
+    this.act('role:schedule,cmd:createScale',{
+      maximum_hours_month:maximum_hours_month,
+      maximum_hours_week:maximum_hours_week,
+      minimum_hours_month:minimum_hours_month,
+      minimum_hours_week:minimum_hours_week,
+      employee:employee,
+      month:month,
+      year:year,
+      amount_of_hours:amount_of_hours,
+      id:id
+    }, respond)
 });
 
     this.add('role:api,path:listDay', function (msg, respond) {

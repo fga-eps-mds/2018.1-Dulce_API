@@ -25,6 +25,7 @@ require('seneca')()
     schedule.specialty = msg.specialty
     schedule.amount_of_hours = msg.amount_of_hours
     schedule.month = msg.month
+    schedule.year = msg.year
 
     schedule.list$({date:schedule.date, employee:schedule.employee}, function(err,list){
       list.forEach(function(time){
@@ -65,6 +66,65 @@ require('seneca')()
         schedule.list$({ month, id }, function (error, schedule) {
           respond(null, schedule);
       });
+
+  .add('role:schedule, cmd:createScale', function error(msg, respond){
+    var scale = this.make('scale')
+    var schedule = this.make('schedule')
+    scale.maximum_hours_month = msg.maximum_hours_month
+    scale.maximum_hours_week = msg.maximum_hours_week
+    scale.minimum_hours_month = msg.minimum_hours_month
+    scale.minimum_hours_week = msg.minimum_hours_week
+    scale.employee = msg.employee
+    scale.month = msg.month
+    scale.year = msg.year
+    scale.id = msg.id
+
+    scale.amount_of_hours = 0
+    scale.schedule_list = []
+
+    //console.log(schedule_list)
+    console.log(scale.month)
+    console.log(scale.year)
+    console.log(scale.employee)
+
+    console.log("1")
+    schedule.list$({month:scale.month, year:scale.year, employee:scale.employee}, function(err,list){
+      list.forEach(function(time){
+        console.log(time.month)
+        console.log(time.year)
+        console.log(time.employee)
+        console.log("=======================================================")
+        scale.schedule_list.push(time)
+        console.log(time.amount_of_hours)
+        console.log("=======================================================")
+      })
+    })
+    console.log("3")
+    for (var i = 0; i < scale.amount_of_hours.length; i++) {
+      scale.amount_of_hours += scale.schedule_list.amount_of_hours[i]
+    }
+    //Validations
+
+  /*  if (getDaysInMonth(scale.month, scale.year) < scale.schedule_list.length) {
+      respond(null, {success:false, message: 'Número de horários é maior que a quantidade de dias no mês'})
+    } else*/ if (scale.minimum_hours_week == null || (scale.minimum_hours_week.length < 1)) {
+      respond(null, {success:false, message: 'O minimo de horas por semana não deve ser vazio'})
+    } else if(scale.minimum_hours_month == null || (scale.minimum_hours_month < 1) ){
+      respond(null, {success:false, message: 'O minimo de horas por mês não deve ser vazio'})
+    } else if (scale.amount_of_hours < scale.minimum_hours_month) {
+      respond(null, {success:false, message: 'A escala possui menos horas que o minimo estabelecido'})
+    }
+
+    scale.list$({month:scale.month, year:scale.year, employee:scale.employee}, function(err,list){
+      list.forEach(function(s){
+        respond(null, {success:false, message: 'Já existe uma escala para este mês'})
+      })
+    })
+
+    scale.save$(function(err,scale){
+      respond(null,scale)
+    })
+
   })
     .add('role:schedule,cmd:listYear', function (msg, respond) {
       var id = msg.id;
