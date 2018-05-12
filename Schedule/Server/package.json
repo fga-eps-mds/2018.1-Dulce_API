@@ -2,9 +2,10 @@
   "name": "node-app",
   "version": "1.0.0",
   "description": "",
-  "main": "client_sector.js",
+
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon client_sector.js",
+    "start": "nodemon schedule.js",
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "",

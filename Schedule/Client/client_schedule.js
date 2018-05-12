@@ -1,4 +1,5 @@
 var express = require('express');
+
 var bodyParser = require('body-parser')
 var seneca = require('seneca');
 var senecaWeb = require('seneca-web');
@@ -22,6 +23,7 @@ var strategy = new JwtStrategy(jwtOptions, async function(payload, next){
 Passport.use(strategy)
 
 Passport.serializeUser((schedule, cb) => {
+
   cb(null, schedule)
 })
 
