@@ -39,38 +39,3 @@ describe('Routing', function() {
 		});
 	});
 });
-
-
-
-describe('should test the token validation', () => {
-  it('should return an error message: not token provided', () => {
-    request(url)
-    .get('/api//schedule/listUser')
-    .send()//Status code
-    .end((err,res) => {
-       if (err) {
-         throw err;
-       }
-    res.should.be.json;
-    res.body.message.should.equal('No token provided.');
-    res.body.success.should.equal(false);
-    res.status.should.equal(403);
-     });
-   });
-
-    it('should return an error of: Failed to authenticate token.', () => {
-      request(url)
-        .get('/api/userManager/listUser')
-        .set('x-access-token', 'any string')
-        .end((err,res) => {
-          if (err) {
-            throw err;
-          }
-          res.should.be.json;
-          res.body.message.should.equal('Failed to authenticate token.');
-          res.body.success.should.equal(false);
-          res.status.should.equal(403);
-     });
-   });
-
-});
