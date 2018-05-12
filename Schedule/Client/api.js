@@ -40,7 +40,24 @@ module.exports = function api(options) {
     })
 
     this.add('role:api,path:listDay', function (msg, respond) {
-        var day = msg.args.query.day;
+        var currentDate = new Date();
+        var year = msg.args.query.year; 
+        var day = msg.args.query.day;    
+        var month = msg.args.query.month;
+        if(year == undefined){
+            year = currentDate.getFullYear();
+        }else {
+            currentDate.setFullYear(year);
+        }
+        if(month == undefined){
+            month = currentDate.getMonth() + 1;
+        }else{
+            currentDate.setMonth(month);
+        }
+        if(day == undefined){
+            day = currentDate.getDate() - 1;
+            day = JSON.stringify(day);
+        }
         var id = msg.args.query.id;
         this.act('role:schedule,cmd:listDay', {
             day: day,
@@ -49,7 +66,19 @@ module.exports = function api(options) {
     });
 
     this.add('role:api,path:listMonth', function (msg, respond) {
+        var currentDate = new Date();
+        var year = msg.args.query.year;    
         var month = msg.args.query.month;
+        if(year == undefined){
+            year = currentDate.getFullYear();
+        }else {
+            currentDate.setFullYear(year);
+        }
+        if(month == undefined){
+            month = currentDate.getMonth() + 1;
+            month = JSON.stringify(month);
+        }
+    
         var id =  msg.args.query.id;
         this.act('role:schedule,cmd:listMonth', {
             month: month,
@@ -62,7 +91,12 @@ module.exports = function api(options) {
 
     });
     this.add('role:api,path:listYear', function (msg, respond) {
+        var currentDate = new Date();
         var year = msg.args.query.year;
+        if(year == undefined){
+            year = currentDate.getFullYear();
+            year = JSON.stringify(year);
+        }
         var id =  msg.args.query.id;
         this.act('role:schedule,cmd:listYear', {
             year: year,
@@ -82,15 +116,15 @@ module.exports = function api(options) {
         }else {
             currentDate.setFullYear(year);
         }
-        if(day == undefined){
-            day = currentDate.getDate() - 1;
-        }else {
-            currentDate.setDate(day);
-        }
         if(month == undefined){
             month = currentDate.getMonth() + 1;
         }else{
             currentDate.setMonth(month);
+        }
+        if(day == undefined){
+            day = currentDate.getDate() - 1;
+        }else {
+            currentDate.setDate(day);
         }
         if(week == undefined){
 
@@ -125,25 +159,25 @@ module.exports = function api(options) {
                 pin: 'role:api,path:*',
                 map: {
                     create: { POST: true,
-                  /*   auth: {
+                     auth: {
                         strategy: 'jwt',
                         fail: '/api/schedule/error'
                       }
-                    */ },
+                     },
                     listDay: { GET: true,
-                      auth: {
+                     auth: {
                          strategy: 'jwt',
                          fail: '/api/schedule/error'
                        }
                      },
                     listSchedule: { GET: true,
-                      auth: {
+                     auth: {
                          strategy: 'jwt',
                          fail: '/api/schedule/error'
                        }
                      },
                     listMonth: { GET: true,
-                      auth: {
+                     auth: {
                          strategy: 'jwt',
                          fail: '/api/schedule/error'
                        }
@@ -155,10 +189,10 @@ module.exports = function api(options) {
                        }
                      },
                      listWeek: { GET: true,
-                   /*     auth: {
+                       auth: {
                            strategy: 'jwt',
                            fail: '/api/schedule/error'
-                        }*/
+                        }
                     },
                     error: {GET: true }
                 }
