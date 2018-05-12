@@ -8,30 +8,32 @@ describe('Routing', function() {
   const url = 'http://localhost:8090';
   const urlLogin = 'http://localhost:8091';
 
-  describe('should test new schedule creation', () => {
-    it('should create a new schedule',(done) => {
+  describe('should test a schedule by sector view', () => {
+    it('should test a schedule by sector view',(done) => {
       let schedule = {
-        name: 'gui',
-        registration: '12345',
-        hospital: 'gama',          //creating a schedule to send
-        sector: 'gama',
-        password: 'test',
-        manager: true
+
+        date = '01/01/2020',
+        start_time = '15:00'
+        end_time = '19:00'        //creating a schedule to send
+        sector = 'UTI',
+        employee = 'employee',
+        specialty = 'employee',
+        id = '332323232'
       };
 	request(url)
-		.post('/api/userManager/create')
-		.send(schedule)    //sending schedule to api
+		.post('/api/schedule/create')
+		.send(schedule)               //sending schedule to api
 		.end((err,res) => {
 			if (err) {
 				throw err;
 			}
-	    res.body.name.should.equal('gui');
-	    res.body.registration.should.equal('12345');
-      res.body.manager.should.equal(true);
-      res.body.hospital.should.equal('gama');
-      res.body.sector.should.equal('gama');
-      res.body.password.should.equal('test');
-      res.status.should.equal(200);
+	    res.body.date.should.equal('01/01/2020');
+	    res.body.start_time.should.equal('15:00');
+      res.body.end_time.should.equal('19:00');
+      res.body.sector.should.equal('UTI');
+      res.body.employee.should.equal('employee');
+      res.body.specialty.should.equal('employee');
+      res.id.should.equal('332323232');
 
 			done();
 		});
@@ -43,7 +45,7 @@ describe('Routing', function() {
 describe('should test the token validation', () => {
   it('should return an error message: not token provided', () => {
     request(url)
-    .get('/api/userManager/listUser')
+    .get('/api//schedule/listUser')
     .send()//Status code
     .end((err,res) => {
        if (err) {
@@ -70,60 +72,5 @@ describe('should test the token validation', () => {
           res.status.should.equal(403);
      });
    });
-
-});
-
-
-describe('/POST Register', () => {
-  it('it should Register, Login, and check token', () => {
-    let login_details = {
-      'registration': '54321',
-      'password': '1234'
-    }
-
-    let register_details = {
-      'name': 'John',
-      'registration': '54321',
-      'hospital': 'Gama',
-      'sector' : '1234',
-      'password': '1234',
-      'manager': true
-    };
-    request(url)
-      .post('/api/userManager/create')
-      .send(register_details) // this is like sending a post with a new User
-      .end((err, res) => { // when we get a response from the endpoint
-        // in other words,
-        // the res object should have a status of 201
-        res.should.have.status(201);
-        // the property, res.body.state, we expect it to be true.
-        expect(res.body.state).to.be.true;
-
-        // follow up with login
-        request(urlLogin)
-          .post('/api/userManager/login')
-          .send(login_details)
-          .end((err, res) => {
-            console.log('this was run the login part');
-            res.should.have.status(200);
-            expect(res.body.state).to.be.true;
-            res.body.should.have.property('token');
-
-            let token = res.body.token;
-            // follow up with requesting schedule protected page
-              request(url)
-              .get('/api/userManager/listUser')
-              // we set the auth header with our token
-              .set('Authorization', 'Bearer ' + token)
-              .end((err, res) => {
-                res.status.should.equal(200);
-                expect(res.body.state).to.be.true;
-                res.body.data.should.be.an('array');
-              })
-          })
-
-      })
-    })
-  })
 
 });
