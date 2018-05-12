@@ -2,7 +2,8 @@ module.exports = function api(options) {
     currentWeekNumber = require('current-week-number');
 
     this.add('role:api,path:create', function (msg, respond) {
-
+        var time_init = new Date();
+        var time_final = new Date();
         var date = msg.args.body.date
         var start_time = msg.args.body.start_time
         var end_time = msg.args.body.end_time
@@ -11,11 +12,19 @@ module.exports = function api(options) {
         var specialty = msg.args.body.specialty
         var id = msg.args.query.id
 
-        // The diference between times is given in milliseconds. We are expecting hours,
-        //so wu divide by 3600000.0 that is the number of milliseconds in 1 hour
-        var amount_of_hours = (Date.parse(end_time) - Date.parse(start_time)) / 3600000.0
+        time_init.setHours(parseInt(start_time,10)) 
+        time_init.setMinutes(0)
+        time_init.setSeconds(0);
 
-        if (Date.parse(start_time) > Date.parse(end_time)) {
+        time_final.setHours(parseInt(end_time,10)) 
+        time_final.setMinutes(0)
+        time_final.setSeconds(0);
+
+        var amount_of_hours = (time_final.getHours() - time_init.getHours()); 
+
+        var amount_of_hours = JSON.stringify(amount_of_hours);
+
+        if (time_init > time_final) {
             this.act('role:schedule,cmd:create', {
             }, respond(null, { success: false, message: 'Horários de Inicio e Fim estão em comflito' }))
         } else if (sector == null || (sector.length < 1)) {
@@ -146,6 +155,46 @@ module.exports = function api(options) {
     });
     
 
+    this.add('role:api,path:listHourWeek', function (msg, respond) {
+        var currentDate = new Date();
+        var year = msg.args.query.year; 
+        var day = msg.args.query.day;    
+        var month = msg.args.query.month;
+        var week = msg.args.query.week;
+
+        if(year == undefined){
+            year = currentDate.getFullYear();
+        }else {
+            currentDate.setFullYear(year);
+        }
+        if(month == undefined){
+            month = currentDate.getMonth() + 1;
+        }else{
+            currentDate.setMonth(month);
+        }
+        if(day == undefined){
+            day = currentDate.getDate() - 1;
+        }else {
+            currentDate.setDate(day);
+        }
+        if(week == undefined){
+
+        var week = currentWeekNumber(currentDate);
+
+        week = JSON.stringify(week);
+            
+        }
+        
+        var id =  msg.args.query.id;
+        
+        
+        this.act('role:schedule,cmd:listHourWeek', {
+            week: week,
+            id: id
+        }, respond)
+    });
+    
+
     this.add('role:api,path:error', function(msg, respond){
   this.act('role:schedule, cmd:error',{}, respond)
 });
@@ -159,7 +208,7 @@ module.exports = function api(options) {
                 pin: 'role:api,path:*',
                 map: {
                     create: { POST: true,
-                     auth: {
+                    auth: {
                         strategy: 'jwt',
                         fail: '/api/schedule/error'
                       }
@@ -194,6 +243,7 @@ module.exports = function api(options) {
                            fail: '/api/schedule/error'
                         }
                     },
+                    listHourWeek:{GET:true},
                     error: {GET: true }
                 }
             }

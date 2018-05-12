@@ -89,6 +89,21 @@ seneca()
         });
     })
 
+    .add('role:schedule,cmd:listHourWeek',function(msg,respond){
+        var id = msg.id;
+        var week = msg.week;
+        var hoursForWeek = 0;
+        var schedule = this.make('schedule');
+        schedule.list$({ week}, function(error,list){
+            list.forEach(function(schedule){
+        if(schedule.amount_of_hours != null){   
+             hoursForWeek += parseInt(schedule.amount_of_hours,10);
+            }})
+            hoursForWeek = JSON.stringify(hoursForWeek);
+            respond(null,{hoursForWeek});
+        });
+    })
+
     .add('role:schedule, cmd:error', function error(msg, respond){
     respond(null, {success:false, message: 'acesso negado'});
   })
