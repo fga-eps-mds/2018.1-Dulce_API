@@ -22,4 +22,4 @@ describe('Routing', function() {
       });
     });
   });
-});
+})
