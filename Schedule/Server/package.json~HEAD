@@ -4,8 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon scheduleSector.js",
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "start": "nodemon schedule.js"
   },
   "author": "",
   "license": "MIT",

@@ -1,5 +1,3 @@
-
-
 var seneca = require('seneca');
 var currentWeekNumber = require('current-week-number');
 
@@ -88,6 +86,14 @@ seneca()
         var month = msg.month;
         var schedule = this.make('schedule');
         schedule.list$({ month, id }, function (error, schedule) {
+          respond(null, schedule);
+      });
+  })
+    .add('role:schedule,cmd:listSectorDay', function (msg, respond) {
+        var sector = msg.sector;
+        var day = msg.day;
+        var schedule = this.make('schedule');
+        schedule.list$({ day , sector }, function (error, schedule) {
             respond(null, schedule);
         });
     })
@@ -133,3 +139,33 @@ seneca()
         respond(null, { success: false, message: 'acesso negado' });
     })
 
+    .add('role:schedule,cmd:listSectorMonth', function (msg, respond) {
+        var sector = msg.sector;
+         var month = msg.month;
+          var schedule = this.make('schedule');
+          schedule.list$({ month , sector }, function (error, schedule) {
+              respond(null, schedule);
+          });
+      })
+
+      .add('role:schedule,cmd:listSectorYear',function(msg,respond){
+        var sector = msg.sector;
+        var year = msg.year;
+        var schedule = this.make('schedule');
+        schedule.list$({year , sector},function(error,schedule){
+            respond(null,schedule);
+        });
+    })
+
+    .add('role:schedule,cmd:listSectorWeek',function(msg,respond){
+        var sector = msg.sector;
+        var week = msg.week;
+        console.log(week , sector);
+        console.log(sector);
+        console.log(week);
+        var schedule = this.make('schedule');
+        schedule.list$({sector , week}, function(error,schedule){
+            respond(null,schedule);
+            console.log(schedule);
+        });
+    })

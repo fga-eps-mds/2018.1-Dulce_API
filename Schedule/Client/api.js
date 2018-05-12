@@ -115,46 +115,106 @@ module.exports = function api(options) {
     });
 
     this.add('role:api,path:listWeek', function (msg, respond) {
+      if (year == undefined) {
+          year = currentDate.getFullYear();
+      } else {
+          currentDate.setFullYear(year);
+      }
+      if (month == undefined) {
+          month = currentDate.getMonth() + 1;
+      } else {
+          currentDate.setMonth(month);
+      }
+      if (day == undefined) {
+          day = currentDate.getDate() - 1;
+      } else {
+          currentDate.setDate(day);
+      }
+      if (week == undefined) {
+
+          var week = currentWeekNumber(currentDate);
+
+          week = JSON.stringify(week);
+
+      }
+
+      var id = msg.args.query.id;
+
+      console.log(id);
+
+
+      this.act('role:schedule,cmd:listWeek', {
+          week: week,
+          id: id
+      }, respond)
+  });
+
+    this.add('role:api,path:listSectorDay', function (msg, respond) {
+        var day = msg.args.query.day;
+        var sector = msg.args.query.sector;
+        this.act('role:schedule,cmd:listSectorDay', {
+            day: day,
+            sector: sector
+        }, respond)
+    });
+
+    this.add('role:api,path:listSectorMonth', function (msg, respond) {
+        var month = msg.args.query.month;
+        var sector =  msg.args.query.sector;
+        this.act('role:schedule,cmd:listSectorMonth', {
+            month: month,
+            sector: sector
+        }, respond)
+    });
+
+    this.add('role:api,path:listSectorYear', function (msg, respond) {
+        var year = msg.args.query.year;
+        var sector =  msg.args.query.sector;
+        this.act('role:schedule,cmd:listSectorYear', {
+            year: year,
+            sector: sector
+        }, respond)
+    });
+
+    this.add('role:api,path:listSectorWeek', function (msg, respond) {
         var currentDate = new Date();
         var year = msg.args.query.year;
         var day = msg.args.query.day;
         var month = msg.args.query.month;
         var week = msg.args.query.week;
-        console.log(week);
-        if (year == undefined) {
+        if(year == undefined){
             year = currentDate.getFullYear();
-        } else {
+        }else {
             currentDate.setFullYear(year);
         }
-        if (month == undefined) {
-            month = currentDate.getMonth() + 1;
-        } else {
-            currentDate.setMonth(month);
-        }
-        if (day == undefined) {
+        if(day == undefined){
             day = currentDate.getDate() - 1;
-        } else {
+        }else {
             currentDate.setDate(day);
         }
-        if (week == undefined) {
+        if(month == undefined){
+            month = currentDate.getMonth() + 1;
+        }else{
+            currentDate.setMonth(month);
+        }
+        if(week == undefined){
 
-            var week = currentWeekNumber(currentDate);
+        var week = currentWeekNumber(currentDate);
 
-            week = JSON.stringify(week);
+        week = JSON.stringify(week);
 
         }
 
-        var id = msg.args.query.id;
+        var sector =  msg.args.query.sector;
 
-        console.log(id);
+        console.log(sector);
 
 
-        this.act('role:schedule,cmd:listWeek', {
+        this.act('role:schedule,cmd:listSectorWeek', {
             week: week,
-            id: id
-        }, respond)
-    });
-
+            sector: sector
+          }, respond)
+      });
 
     this.add('role:api,path:listHourWeek', function (msg, respond) {
         var currentDate = new Date();
@@ -257,17 +317,40 @@ module.exports = function api(options) {
                             fail: '/api/schedule/error'
                         }
                     },
-                    error: { GET: true }
+                    error: { GET: true },
+
+                    listSectorDay: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                    listSchedule: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                    listSectorMonth: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                    listSectorYear: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                     listSectorWeek: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+
+                    },
+                    error: {GET: true }
                 }
             }
         }, respond)
     })
-
-
-
-
-
-
-
-
-
