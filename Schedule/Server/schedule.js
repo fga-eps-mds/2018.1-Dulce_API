@@ -16,7 +16,7 @@ require('seneca')()
 })
 
   .add('role:schedule,cmd:create', function create (msg,respond) {
-    var schedule = this.make('schedule')
+    var schedule = this.make('schedules')
     schedule.date = msg.date
     schedule.start_time = msg.start_time
     schedule.end_time = msg.end_time
@@ -29,6 +29,7 @@ require('seneca')()
 
     schedule.list$({date:schedule.date, employee:schedule.employee}, function(err,list){
       list.forEach(function(time){
+        console.log("entra no for each do horario")
           if (Date.parse(schedule.start_time) >= Date.parse(time.start_time) && Date.parse(schedule.start_time) <= Date.parse(time.end_time)) {
             respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
           }else if (Date.parse(schedule.end_time) >= Date.parse(time.start_time) && Date.parse(schedule.end_time) <= Date.parse(time.end_time)) {
@@ -39,7 +40,6 @@ require('seneca')()
       })
     })
   })
-
 
     .add('role:schedule, cmd:listSchedule', function (msg, respond) {
 
@@ -68,8 +68,7 @@ require('seneca')()
       });
 
   .add('role:schedule, cmd:createScale', function error(msg, respond){
-    var scale = this.make('scale')
-    var schedule = this.make('schedule')
+    var scale = this.make('scales')
     scale.maximum_hours_month = msg.maximum_hours_month
     scale.maximum_hours_week = msg.maximum_hours_week
     scale.minimum_hours_month = msg.minimum_hours_month
@@ -82,44 +81,41 @@ require('seneca')()
     scale.amount_of_hours = 0
     scale.schedule_list = []
 
-    //console.log(schedule_list)
-    console.log(scale.month)
-    console.log(scale.year)
-    console.log(scale.employee)
-
-    console.log("1")
-    schedule.list$({month:scale.month, year:scale.year, employee:scale.employee}, function(err,list){
+    var schedule = this.make('schedules');
+    schedule.list$( { employee: scale.employee } , function(error, list){
       list.forEach(function(time){
-        console.log(time.month)
-        console.log(time.year)
-        console.log(time.employee)
-        console.log("=======================================================")
-        scale.schedule_list.push(time)
-        console.log(time.amount_of_hours)
-        console.log("=======================================================")
+        if(time.month.toString() == scale.month && time.year.toString() == scale.year){
+          scale.schedule_list.push(time)
+          console.log("LISTA:");
+          console.log(scale.schedule_list);
+          console.log("HORAS DO TIME:");
+          console.log(time.amount_of_hours);
+          scale.amount_of_hours += time.amount_of_hours
+          console.log("HORAS ATE AGORA:");
+          console.log(scale.amount_of_hours);
+        }
       })
     })
-    console.log("3")
-    for (var i = 0; i < scale.amount_of_hours.length; i++) {
-      scale.amount_of_hours += scale.schedule_list.amount_of_hours[i]
-    }
+
+    console.log("HORAS TOTAIS FINAIS:");
+    wait console.log("hours: " + scale.amount_of_hours)
     //Validations
 
   /*  if (getDaysInMonth(scale.month, scale.year) < scale.schedule_list.length) {
       respond(null, {success:false, message: 'Número de horários é maior que a quantidade de dias no mês'})
-    } else*/ if (scale.minimum_hours_week == null || (scale.minimum_hours_week.length < 1)) {
+    } else*/if (scale.minimum_hours_week == null || (scale.minimum_hours_week.length < 1)) {
       respond(null, {success:false, message: 'O minimo de horas por semana não deve ser vazio'})
     } else if(scale.minimum_hours_month == null || (scale.minimum_hours_month < 1) ){
       respond(null, {success:false, message: 'O minimo de horas por mês não deve ser vazio'})
     } else if (scale.amount_of_hours < scale.minimum_hours_month) {
-      respond(null, {success:false, message: 'A escala possui menos horas que o minimo estabelecido'})
+        wait respond(null, {success:false, message: 'A escala possui menos horas que o minimo estabelecido'})
     }
 
-    scale.list$({month:scale.month, year:scale.year, employee:scale.employee}, function(err,list){
-      list.forEach(function(s){
-        respond(null, {success:false, message: 'Já existe uma escala para este mês'})
-      })
-    })
+    // scale.list$({month:scale.month, year:scale.year, employee:scale.employee}, function(err,list){
+    //   list.forEach(function(s){
+    //     respond(null, {success:false, message: 'Já existe uma escala para este mês'})
+    //   })
+    // })
 
     scale.save$(function(err,scale){
       respond(null,scale)

@@ -45,6 +45,11 @@ module.exports = function api(options){
     }
   })
 
+  this.add('role:api,path:listSchedule', function(msg, respond){
+    this.act('role:schedule, cmd:listSchedule',{}, respond)
+
+  });
+
   this.add('role:api,path:createScale', function(msg, respond){
     var maximum_hours_month = msg.args.body.maximum_hours_month
     var maximum_hours_week = msg.args.body.maximum_hours_week
