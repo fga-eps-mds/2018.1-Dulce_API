@@ -59,6 +59,17 @@ seneca()
             respond(null, schedule);
         });
     })
+
+      .add('role:schedule,cmd:listYear',function(msg,respond){
+        var id = msg.id;
+        var year = msg.year;
+        console.log(id);
+        var schedule = this.make('schedule');
+        schedule.list$({id, year}, function(error,schedule){
+            respond(null,schedule);
+            
+        });
+    })
   })
 
     .add('role:schedule,cmd:listDay', function (msg, respond) {

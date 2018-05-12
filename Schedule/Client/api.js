@@ -195,6 +195,48 @@ module.exports = function api(options) {
     });
     
 
+    this.add('role:api,path:listWeek', function (msg, respond) {
+        var currentDate = new Date();
+        var year = msg.args.query.year; 
+        var day = msg.args.query.day;    
+        var month = msg.args.query.month;
+        var week = msg.args.query.week;
+        console.log(week);
+        if(year == undefined){
+            year = currentDate.getFullYear();
+        }else {
+            currentDate.setFullYear(year);
+        }
+        if(month == undefined){
+            month = currentDate.getMonth() + 1;
+        }else{
+            currentDate.setMonth(month);
+        }
+        if(day == undefined){
+            day = currentDate.getDate() - 1;
+        }else {
+            currentDate.setDate(day);
+        }
+        if(week == undefined){
+
+        var week = currentWeekNumber(currentDate);
+
+        week = JSON.stringify(week);
+            
+        }
+        
+        var id =  msg.args.query.id;
+        
+        console.log(id);
+        
+        
+        this.act('role:schedule,cmd:listWeek', {
+            week: week,
+            id: id
+        }, respond)
+    });
+    
+
     this.add('role:api,path:error', function(msg, respond){
   this.act('role:schedule, cmd:error',{}, respond)
 });
