@@ -1,6 +1,6 @@
+currentWeekNumber = require('current-week-number');
 
-module.exports = function api(options) {
-    currentWeekNumber = require('current-week-number');
+module.exports = function api(options){
 
     this.add('role:api,path:create', function (msg, respond) {
         var time_init = new Date();
@@ -47,7 +47,7 @@ module.exports = function api(options) {
                 id: id,
             }, respond)
         }
-    })
+    });
 
     this.add('role:api,path:listDay', function (msg, respond) {
         var currentDate = new Date();
@@ -115,39 +115,85 @@ module.exports = function api(options) {
     });
 
     this.add('role:api,path:listWeek', function (msg, respond) {
-      if (year == undefined) {
-          year = currentDate.getFullYear();
-      } else {
-          currentDate.setFullYear(year);
-      }
-      if (month == undefined) {
-          month = currentDate.getMonth() + 1;
-      } else {
-          currentDate.setMonth(month);
-      }
-      if (day == undefined) {
-          day = currentDate.getDate() - 1;
-      } else {
-          currentDate.setDate(day);
-      }
-      if (week == undefined) {
+        var currentDate = new Date();
+        var year = msg.args.query.year;
+        var day = msg.args.query.day;
+        var month = msg.args.query.month;
+        var week = msg.args.query.week;
+        console.log(week);
+        if (year == undefined) {
+            year = currentDate.getFullYear();
+        } else {
+            currentDate.setFullYear(year);
+        }
+        if (month == undefined) {
+            month = currentDate.getMonth() + 1;
+        } else {
+            currentDate.setMonth(month);
+        }
+        if (day == undefined) {
+            day = currentDate.getDate() - 1;
+        } else {
+            currentDate.setDate(day);
+        }
+        if (week == undefined) {
 
-          var week = currentWeekNumber(currentDate);
+            var week = currentWeekNumber(currentDate);
 
-          week = JSON.stringify(week);
+            week = JSON.stringify(week);
 
-      }
+        }
 
-      var id = msg.args.query.id;
+        var id = msg.args.query.id;
 
-      console.log(id);
+        console.log(id);
 
 
-      this.act('role:schedule,cmd:listWeek', {
-          week: week,
-          id: id
-      }, respond)
-  });
+        this.act('role:schedule,cmd:listWeek', {
+            week: week,
+            id: id
+        }, respond)
+    });
+
+
+    this.add('role:api,path:listHourWeek', function (msg, respond) {
+        var currentDate = new Date();
+        var year = msg.args.query.year;
+        var day = msg.args.query.day;
+        var month = msg.args.query.month;
+        var week = msg.args.query.week;
+
+        if (year == undefined) {
+            year = currentDate.getFullYear();
+        } else {
+            currentDate.setFullYear(year);
+        }
+        if (month == undefined) {
+            month = currentDate.getMonth() + 1;
+        } else {
+            currentDate.setMonth(month);
+        }
+        if (day == undefined) {
+            day = currentDate.getDate() - 1;
+        } else {
+            currentDate.setDate(day);
+        }
+        if (week == undefined) {
+
+            var week = currentWeekNumber(currentDate);
+
+            week = JSON.stringify(week);
+
+        }
+
+        var id = msg.args.query.id;
+
+
+        this.act('role:schedule,cmd:listHourWeek', {
+            week: week,
+            id: id
+        }, respond)
+    });
 
     this.add('role:api,path:listSectorDay', function (msg, respond) {
         var day = msg.args.query.day;
@@ -207,59 +253,17 @@ module.exports = function api(options) {
 
         var sector =  msg.args.query.sector;
 
-        console.log(sector);
-
 
         this.act('role:schedule,cmd:listSectorWeek', {
             week: week,
             sector: sector
-          }, respond)
-      });
-
-    this.add('role:api,path:listHourWeek', function (msg, respond) {
-        var currentDate = new Date();
-        var year = msg.args.query.year;
-        var day = msg.args.query.day;
-        var month = msg.args.query.month;
-        var week = msg.args.query.week;
-
-        if (year == undefined) {
-            year = currentDate.getFullYear();
-        } else {
-            currentDate.setFullYear(year);
-        }
-        if (month == undefined) {
-            month = currentDate.getMonth() + 1;
-        } else {
-            currentDate.setMonth(month);
-        }
-        if (day == undefined) {
-            day = currentDate.getDate() - 1;
-        } else {
-            currentDate.setDate(day);
-        }
-        if (week == undefined) {
-
-            var week = currentWeekNumber(currentDate);
-
-            week = JSON.stringify(week);
-
-        }
-
-        var id = msg.args.query.id;
-
-
-        this.act('role:schedule,cmd:listHourWeek', {
-            week: week,
-            id: id
         }, respond)
     });
 
 
-    this.add('role:api,path:error', function (msg, respond) {
-        this.act('role:schedule, cmd:error', {}, respond)
-    });
-
+    this.add('role:api,path:error', function(msg, respond){
+        this.act('role:schedule, cmd:error',{}, respond)
+});
 
 
     this.add('init:api', function (msg, respond) {
@@ -268,12 +272,11 @@ module.exports = function api(options) {
                 prefix: '/api/schedule',
                 pin: 'role:api,path:*',
                 map: {
-                    create: {
-                        POST: true,
-                        auth: {
-                            strategy: 'jwt',
-                            fail: '/api/schedule/error'
-                        }
+                    create: { POST: true,
+                              auth: {
+                                strategy: 'jwt',
+                                fail: '/api/schedule/error'
+                      }
                     },
                     listDay: {
                         GET: true,
@@ -323,6 +326,12 @@ module.exports = function api(options) {
                          fail: '/api/schedule/error'
                        }
                      },
+                    listSchedule: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
                     listSectorMonth: { GET: true,
                       auth: {
                          strategy: 'jwt',
@@ -336,12 +345,23 @@ module.exports = function api(options) {
                        }
                      },
                      listSectorWeek: { GET: true,
-                      auth: {
-                         strategy: 'jwt',
-                         fail: '/api/schedule/error'
+                       auth: {
+                           strategy: 'jwt',
+                           fail: '/api/schedule/error'
+                        }
                     },
                     error: {GET: true }
                 }
             }
         }, respond)
     })
+
+
+
+
+
+
+
+
+
+}

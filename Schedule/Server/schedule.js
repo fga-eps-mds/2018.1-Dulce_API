@@ -60,18 +60,6 @@ seneca()
         });
     })
 
-    .add('role:schedule,cmd:listYear', function (msg, respond) {
-        var id = msg.id;
-        var year = msg.year;
-        console.log(id);
-        var schedule = this.make('schedule');
-        schedule.list$({ id, year }, function (error, schedule) {
-            respond(null, schedule);
-
-        });
-    })
-
-
     .add('role:schedule,cmd:listDay', function (msg, respond) {
         var id = msg.id;
         var day = msg.day;
@@ -89,34 +77,25 @@ seneca()
           respond(null, schedule);
       });
   })
-    .add('role:schedule,cmd:listSectorDay', function (msg, respond) {
-        var sector = msg.sector;
-        var day = msg.day;
-        var schedule = this.make('schedule');
-        schedule.list$({ day , sector }, function (error, schedule) {
-            respond(null, schedule);
-        });
-    })
-
     .add('role:schedule,cmd:listYear', function (msg, respond) {
-        var id = msg.id;
-        var year = msg.year;
-        console.log(id);
-        var schedule = this.make('schedule');
-        schedule.list$({ id, year }, function (error, schedule) {
-            respond(null, schedule);
+      var id = msg.id;
+      var year = msg.year;
+      console.log(id);
+      var schedule = this.make('schedule');
+      schedule.list$({ id, year }, function (error, schedule) {
+        respond(null, schedule);
 
-        });
+      });
     })
 
     .add('role:schedule,cmd:listWeek', function (msg, respond) {
-        var id = msg.id;
-        var week = msg.week;
-        var schedule = this.make('schedule');
-        schedule.list$({ id, week }, function (error, schedule) {
-            respond(null, schedule);
+      var id = msg.id;
+      var week = msg.week;
+      var schedule = this.make('schedule');
+      schedule.list$({ id, week }, function (error, schedule) {
+        respond(null, schedule);
 
-        });
+      });
     })
 
     .add('role:schedule,cmd:listHourWeek', function (msg, respond) {
@@ -135,8 +114,13 @@ seneca()
         });
     })
 
-    .add('role:schedule, cmd:error', function error(msg, respond) {
-        respond(null, { success: false, message: 'acesso negado' });
+    .add('role:schedule,cmd:listSectorDay', function (msg, respond) {
+      var sector = msg.sector;
+      var day = msg.day;
+      var schedule = this.make('schedule');
+      schedule.list$({ day , sector }, function (error, schedule) {
+        respond(null, schedule);
+      });
     })
 
     .add('role:schedule,cmd:listSectorMonth', function (msg, respond) {
@@ -164,4 +148,8 @@ seneca()
         schedule.list$({sector , week}, function(error,schedule){
             respond(null,schedule);
         });
+    })
+
+    .add('role:schedule, cmd:error', function error(msg, respond) {
+        respond(null, { success: false, message: 'acesso negado' });
     })
