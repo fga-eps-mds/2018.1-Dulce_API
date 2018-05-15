@@ -317,15 +317,7 @@ module.exports = function api(options) {
                             fail: '/api/schedule/error'
                         }
                     },
-                    error: { GET: true },
-
                     listSectorDay: { GET: true,
-                      auth: {
-                         strategy: 'jwt',
-                         fail: '/api/schedule/error'
-                       }
-                     },
-                    listSchedule: { GET: true,
                       auth: {
                          strategy: 'jwt',
                          fail: '/api/schedule/error'
@@ -347,7 +339,6 @@ module.exports = function api(options) {
                       auth: {
                          strategy: 'jwt',
                          fail: '/api/schedule/error'
-
                     },
                     error: {GET: true }
                 }

@@ -160,12 +160,8 @@ seneca()
     .add('role:schedule,cmd:listSectorWeek',function(msg,respond){
         var sector = msg.sector;
         var week = msg.week;
-        console.log(week , sector);
-        console.log(sector);
-        console.log(week);
         var schedule = this.make('schedule');
         schedule.list$({sector , week}, function(error,schedule){
             respond(null,schedule);
-            console.log(schedule);
         });
     })
