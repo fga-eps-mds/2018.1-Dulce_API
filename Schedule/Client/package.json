@@ -12,7 +12,6 @@
   "dependencies": {
     "bcrypt": "^2.0.1",
     "body-parser": "1.15.2",
-    "current-week-number": "^1.0.7",
     "express": "^4.14.0",
     "jsonwebtoken": "^8.2.0",
     "mongoose": "^4.6.1",
@@ -26,6 +25,7 @@
     "seneca-web-adapter-express": "^1.1.1"
   },
   "devDependencies": {
+    "current-week-number": "^1.0.7",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "istanbul": "^0.4.5",

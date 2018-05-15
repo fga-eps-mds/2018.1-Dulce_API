@@ -1,3 +1,5 @@
+var currentWeekNumber = require('current-week-number');
+
 require('seneca')()
  .use("entity")
  .use('mongo-store',{
@@ -66,6 +68,7 @@ require('seneca')()
         schedule.list$({ month, id }, function (error, schedule) {
           respond(null, schedule);
       });
+    })
 
   .add('role:schedule, cmd:createScale', function error(msg, respond){
     var scale = this.make('scales')
@@ -98,7 +101,7 @@ require('seneca')()
     })
 
     console.log("HORAS TOTAIS FINAIS:");
-    wait console.log("hours: " + scale.amount_of_hours)
+    console.log("hours: " + scale.amount_of_hours)
     //Validations
 
   /*  if (getDaysInMonth(scale.month, scale.year) < scale.schedule_list.length) {
@@ -108,7 +111,7 @@ require('seneca')()
     } else if(scale.minimum_hours_month == null || (scale.minimum_hours_month < 1) ){
       respond(null, {success:false, message: 'O minimo de horas por mês não deve ser vazio'})
     } else if (scale.amount_of_hours < scale.minimum_hours_month) {
-        wait respond(null, {success:false, message: 'A escala possui menos horas que o minimo estabelecido'})
+      respond(null, {success:false, message: 'A escala possui menos horas que o minimo estabelecido'})
     }
 
     // scale.list$({month:scale.month, year:scale.year, employee:scale.employee}, function(err,list){
