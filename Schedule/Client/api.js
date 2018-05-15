@@ -1,6 +1,6 @@
+currentWeekNumber = require('current-week-number');
 
-module.exports = function api(options) {
-    currentWeekNumber = require('current-week-number');
+module.exports = function api(options){
 
     this.add('role:api,path:create', function (msg, respond) {
         var time_init = new Date();
@@ -47,7 +47,7 @@ module.exports = function api(options) {
                 id: id,
             }, respond)
         }
-    })
+    });
 
     this.add('role:api,path:listDay', function (msg, respond) {
         var currentDate = new Date();
@@ -195,11 +195,75 @@ module.exports = function api(options) {
         }, respond)
     });
 
-
-    this.add('role:api,path:error', function (msg, respond) {
-        this.act('role:schedule, cmd:error', {}, respond)
+    this.add('role:api,path:listSectorDay', function (msg, respond) {
+        var day = msg.args.query.day;
+        var sector = msg.args.query.sector;
+        this.act('role:schedule,cmd:listSectorDay', {
+            day: day,
+            sector: sector
+        }, respond)
     });
 
+    this.add('role:api,path:listSectorMonth', function (msg, respond) {
+        var month = msg.args.query.month;
+        var sector =  msg.args.query.sector;
+        this.act('role:schedule,cmd:listSectorMonth', {
+            month: month,
+            sector: sector
+        }, respond)
+    });
+
+    this.add('role:api,path:listSectorYear', function (msg, respond) {
+        var year = msg.args.query.year;
+        var sector =  msg.args.query.sector;
+        this.act('role:schedule,cmd:listSectorYear', {
+            year: year,
+            sector: sector
+        }, respond)
+    });
+
+    this.add('role:api,path:listSectorWeek', function (msg, respond) {
+        var currentDate = new Date();
+        var year = msg.args.query.year;
+        var day = msg.args.query.day;
+        var month = msg.args.query.month;
+        var week = msg.args.query.week;
+        if(year == undefined){
+            year = currentDate.getFullYear();
+        }else {
+            currentDate.setFullYear(year);
+        }
+        if(day == undefined){
+            day = currentDate.getDate() - 1;
+        }else {
+            currentDate.setDate(day);
+        }
+        if(month == undefined){
+            month = currentDate.getMonth() + 1;
+        }else{
+            currentDate.setMonth(month);
+        }
+        if(week == undefined){
+
+        var week = currentWeekNumber(currentDate);
+
+        week = JSON.stringify(week);
+
+        }
+
+        var sector =  msg.args.query.sector;
+
+
+        this.act('role:schedule,cmd:listSectorWeek', {
+            week: week,
+            sector: sector
+        }, respond)
+    });
+
+
+    this.add('role:api,path:error', function(msg, respond){
+        this.act('role:schedule, cmd:error',{}, respond)
+});
 
 
     this.add('init:api', function (msg, respond) {
@@ -208,12 +272,11 @@ module.exports = function api(options) {
                 prefix: '/api/schedule',
                 pin: 'role:api,path:*',
                 map: {
-                    create: {
-                        POST: true,
-                        auth: {
-                            strategy: 'jwt',
-                            fail: '/api/schedule/error'
-                        }
+                    create: { POST: true,
+                              auth: {
+                                strategy: 'jwt',
+                                fail: '/api/schedule/error'
+                      }
                     },
                     listDay: {
                         GET: true,
@@ -257,7 +320,37 @@ module.exports = function api(options) {
                             fail: '/api/schedule/error'
                         }
                     },
-                    error: { GET: true }
+                    listSectorDay: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                    listSchedule: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                    listSectorMonth: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                    listSectorYear: { GET: true,
+                      auth: {
+                         strategy: 'jwt',
+                         fail: '/api/schedule/error'
+                       }
+                     },
+                     listSectorWeek: { GET: true,
+                       auth: {
+                           strategy: 'jwt',
+                           fail: '/api/schedule/error'
+                        }
+                    },
+                    error: {GET: true }
                 }
             }
         }, respond)
@@ -271,3 +364,4 @@ module.exports = function api(options) {
 
 
 
+}
