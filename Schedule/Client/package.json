@@ -10,8 +10,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^1.0.3",
+
+    "bcrypt": "^2.0.1",
     "body-parser": "1.15.2",
+    "current-week-number": "^1.0.7",
+    "express": "^4.14.0",
+    "jsonwebtoken": "^8.2.0",
+
     "mongoose": "^4.6.1",
     "morgan": "^1.9.0",
     "nodemon": "^1.10.2",
