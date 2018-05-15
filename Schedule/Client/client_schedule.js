@@ -15,8 +15,8 @@ var jwtOptions = {}
 jwtOptions.jwtFromRequest = PassportJwt.ExtractJwt.fromAuthHeaderAsBearerToken()
 jwtOptions.secretOrKey = '123456789'
 
-var strategy = new JwtStrategy(jwtOptions, async function(payload, next){
-  next (null, payload)
+var strategy = new JwtStrategy(jwtOptions, async function(payload, next) {
+      next(null, payload)
 })
 
 Passport.use(strategy)

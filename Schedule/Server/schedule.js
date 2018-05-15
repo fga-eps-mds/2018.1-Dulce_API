@@ -1,55 +1,47 @@
-var seneca = require('seneca');
 var currentWeekNumber = require('current-week-number');
 
-seneca()
-    .use('entity')
-    .use('mongo-store', {
-        name: 'dataBaseSchedule',
-        host: 'mongo',
-        port: 27017
-    })
-    .use('seneca-amqp-transport')
-    .listen({
-        type: 'amqp',
-        pin: 'role:schedule',
-        port: 5672,
-        username: 'guest',
-        password: 'guest',
-        url: 'amqp://rabbitmq'
-    })
+require('seneca')()
+ .use("entity")
+ .use('mongo-store',{
+    name:'dataBaseSchedules',
+    host:'mongo',
+    port:27017
+  })
+ .use('seneca-amqp-transport')
+ .listen({
+    type:'amqp',
+    pin:'role:schedule',
+    port: 5672,
+    username: 'guest',
+    password: 'guest',
+    url: 'amqp://rabbitmq',
+})
 
+  .add('role:schedule,cmd:create', function create (msg,respond) {
+    var schedule = this.make('schedules')
+    schedule.date = msg.date
+    schedule.start_time = msg.start_time
+    schedule.end_time = msg.end_time
+    schedule.sector = msg.sector
+    schedule.employee = msg.employee
+    schedule.specialty = msg.specialty
+    schedule.amount_of_hours = msg.amount_of_hours
+    schedule.month = msg.month
+    schedule.year = msg.year
 
-    .add('role:schedule,cmd:create', function create(msg, respond) {
-        var schedule = this.make('schedule')
-        var date = new Date(msg.date);
-        schedule.date = msg.date
-        schedule.start_time = msg.start_time
-        schedule.end_time = msg.end_time
-        schedule.sector = msg.sector
-        schedule.employee = msg.employee
-        schedule.specialty = msg.specialty
-        schedule.amount_of_hours = msg.amount_of_hours
-        schedule.year = date.getFullYear()
-        schedule.year = JSON.stringify(schedule.year);
-        schedule.day = date.getDate()
-        schedule.day = JSON.stringify(schedule.day);
-        schedule.month = date.getMonth() + 1
-        schedule.month = JSON.stringify(schedule.month);
-        schedule.week = currentWeekNumber(date);
-        schedule.week = JSON.stringify(schedule.week);
-        /*schedule.list$({ date: schedule.date, employee: schedule.employee }, function (err, list) {
-        list.forEach(function (time) {
+    schedule.list$({date:schedule.date, employee:schedule.employee}, function(err,list){
+      list.forEach(function(time){
+        console.log("entra no for each do horario")
           if (Date.parse(schedule.start_time) >= Date.parse(time.start_time) && Date.parse(schedule.start_time) <= Date.parse(time.end_time)) {
-            respond(null, { success: false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado' })
-          } else if (Date.parse(schedule.end_time) >= Date.parse(time.start_time) && Date.parse(schedule.end_time) <= Date.parse(time.end_time)) {
-            respond(null, { success: false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado' })
-          } else if (Date.parse(schedule.start_time) <= Date.parse(time.start_time) && Date.parse(schedule.end_time) >= Date.parse(time.end_time)) {
-            respond(null, { success: false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado' })
-          })*/
-        schedule.save$(function (err, schedule) {
-            respond(null, schedule)
-        })
+            respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
+          }else if (Date.parse(schedule.end_time) >= Date.parse(time.start_time) && Date.parse(schedule.end_time) <= Date.parse(time.end_time)) {
+            respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
+          }else if(Date.parse(schedule.start_time) <= Date.parse(time.start_time) && Date.parse(schedule.end_time) >= Date.parse(time.end_time)){
+            respond(null, {success:false, message: 'Este funcionário possui uma escala em conflito com o horário selecionado'})
+          }
+      })
     })
+  })
 
     .add('role:schedule, cmd:listSchedule', function (msg, respond) {
 
@@ -76,6 +68,62 @@ seneca()
         schedule.list$({ month, id }, function (error, schedule) {
           respond(null, schedule);
       });
+    })
+
+  .add('role:schedule, cmd:createScale', function error(msg, respond){
+    var scale = this.make('scales')
+    scale.maximum_hours_month = msg.maximum_hours_month
+    scale.maximum_hours_week = msg.maximum_hours_week
+    scale.minimum_hours_month = msg.minimum_hours_month
+    scale.minimum_hours_week = msg.minimum_hours_week
+    scale.employee = msg.employee
+    scale.month = msg.month
+    scale.year = msg.year
+    scale.id = msg.id
+
+    scale.amount_of_hours = 0
+    scale.schedule_list = []
+
+    var schedule = this.make('schedules');
+    schedule.list$( { employee: scale.employee } , function(error, list){
+      list.forEach(function(time){
+        if(time.month.toString() == scale.month && time.year.toString() == scale.year){
+          scale.schedule_list.push(time)
+          console.log("LISTA:");
+          console.log(scale.schedule_list);
+          console.log("HORAS DO TIME:");
+          console.log(time.amount_of_hours);
+          scale.amount_of_hours += time.amount_of_hours
+          console.log("HORAS ATE AGORA:");
+          console.log(scale.amount_of_hours);
+        }
+      })
+    })
+
+    console.log("HORAS TOTAIS FINAIS:");
+    console.log("hours: " + scale.amount_of_hours)
+    //Validations
+
+  /*  if (getDaysInMonth(scale.month, scale.year) < scale.schedule_list.length) {
+      respond(null, {success:false, message: 'Número de horários é maior que a quantidade de dias no mês'})
+    } else*/if (scale.minimum_hours_week == null || (scale.minimum_hours_week.length < 1)) {
+      respond(null, {success:false, message: 'O minimo de horas por semana não deve ser vazio'})
+    } else if(scale.minimum_hours_month == null || (scale.minimum_hours_month < 1) ){
+      respond(null, {success:false, message: 'O minimo de horas por mês não deve ser vazio'})
+    } else if (scale.amount_of_hours < scale.minimum_hours_month) {
+      respond(null, {success:false, message: 'A escala possui menos horas que o minimo estabelecido'})
+    }
+
+    // scale.list$({month:scale.month, year:scale.year, employee:scale.employee}, function(err,list){
+    //   list.forEach(function(s){
+    //     respond(null, {success:false, message: 'Já existe uma escala para este mês'})
+    //   })
+    // })
+
+    scale.save$(function(err,scale){
+      respond(null,scale)
+    })
+
   })
     .add('role:schedule,cmd:listYear', function (msg, respond) {
       var id = msg.id;
