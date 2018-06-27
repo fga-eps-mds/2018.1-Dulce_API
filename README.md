@@ -137,4 +137,4 @@ Para uso da API se faz necessário o uso do ***DOCKER*** portanto , para a utili
 
 Para ir para o projeto oficial clique <a href="https://github.com/fga-gpp-mds/2018.1-Dulce_App">aqui</a>
 
-Para ir para o github pages do projeto clique <a href= 'https://fga-gpp-mds.github.io/2018.1-Dulce_App/'>aqui </a>
+Para ir para o github pages do projeto clique <a href= 'https://fga-gpp-mds.github.io/2018.1-Dulce_Docs/'>aqui </a>
